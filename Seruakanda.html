@@ -1,0 +1,3889 @@
+<!DOCTYPE html>
+<html lang="bn" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#15803d" />
+  <title>সেরুয়াকান্দা আশা আলো ফাউন্ডেশন</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Bengali:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <link rel="manifest" id="pwa-manifest"
+    href="data:application/json;charset=utf-8,%7B%22name%22%3A%22%E0%A6%B8%E0%A7%87%E0%A6%B0%E0%A7%81%E0%A6%AF%E0%A6%BC%E0%A6%BE%E0%A6%95%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A6%E0%A6%BE%20%E0%A6%86%E0%A6%B6%E0%A6%BE%20%E0%A6%86%E0%A6%B2%E0%A7%8B%20%E0%A6%AB%E0%A6%BE%E0%A6%89%E0%A6%A8%E0%A7%8D%E0%A6%A1%E0%A7%87%E0%A6%B6%E0%A6%A8%22%2C%22short_name%22%3A%22%E0%A6%86%E0%A6%B6%E0%A6%BE%20%E0%A6%86%E0%A6%B2%E0%A7%8B%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f8fafc%22%2C%22theme_color%22%3A%22%2315803d%22%7D">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d'
+            },
+            accent: {
+              50: '#f0f9ff',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1'
+            }
+          },
+          fontFamily: {
+            sans: ['"Noto Sans Bengali"', 'Inter', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Noto Sans Bengali', 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font-family: inherit;
+    }
+
+    input,
+    textarea,
+    select {
+      max-width: 100%;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .safe-table {
+      width: 100%;
+      min-width: 620px;
+    }
+
+    @media (max-width: 767px) {
+      body {
+        padding-bottom: 72px;
+      }
+
+      .mobile-safe-modal {
+        max-height: 88vh;
+        overflow-y: auto;
+      }
+
+      button {
+        min-height: 36px;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen pb-20 md:pb-0 selection:bg-brand-500 selection:text-white">
+
+  <!-- Top Navigation Header -->
+  <header class="sticky top-0 z-40 bg-brand-700 text-white shadow-md transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 gap-2">
+
+        <!-- Logo & Title -->
+        <div class="flex items-center space-x-3 cursor-pointer min-w-0"
+             onclick="navigateTo('home')">
+
+          <div id="header-logo"
+               class="w-10 h-10 min-w-10 rounded-full bg-white text-brand-700 flex items-center justify-center font-bold text-xl shadow-inner border-2 border-brand-100 overflow-hidden">
+            <i class="fa-solid font-bold text-brand-700">আ</i>
+          </div>
+
+          <div class="min-w-0">
+            <h1 class="font-bold text-base sm:text-lg leading-tight tracking-wide truncate"
+                id="org-name-header">
+              সেরুয়াকান্দা আশা আলো ফাউন্ডেশন
+            </h1>
+
+            <p class="text-xs text-brand-100 font-light hidden sm:block truncate"
+               id="org-tagline-header">
+              স্বেচ্ছায় সহযোগিতা • সম্মিলিত উন্নয়ন • মানবিক সহায়তা
+            </p>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center space-x-1 lg:space-x-3">
+          <button onclick="navigateTo('home')"
+                  class="nav-btn px-3 py-2 rounded-lg text-sm font-medium hover:bg-brand-600 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-house text-xs"></i> প্রচ্ছদ
+          </button>
+
+          <button onclick="navigateTo('transparency')"
+                  class="nav-btn px-3 py-2 rounded-lg text-sm font-medium hover:bg-brand-600 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-chart-line text-xs"></i> স্বচ্ছতা ও হিসাব
+          </button>
+
+          <button onclick="navigateTo('projects')"
+                  class="nav-btn px-3 py-2 rounded-lg text-sm font-medium hover:bg-brand-600 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-list-check text-xs"></i> কার্যক্রম
+          </button>
+
+          <button onclick="navigateTo('posts')"
+                  class="nav-btn px-3 py-2 rounded-lg text-sm font-medium hover:bg-brand-600 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-comments text-xs"></i> মতামত
+          </button>
+
+          <button onclick="navigateTo('contribute')"
+                  class="px-3 py-2 rounded-lg text-sm font-semibold bg-amber-500 hover:bg-amber-600 text-slate-900 shadow transition flex items-center gap-1.5">
+            <i class="fa-solid fa-hand-holding-dollar"></i> সহযোগিতা করুন
+          </button>
+        </nav>
+
+        <!-- Right Side -->
+        <div class="flex items-center space-x-1 sm:space-x-2 shrink-0">
+
+          <button onclick="toggleModal('deploy-guide-modal')"
+                  class="p-2 rounded-full hover:bg-brand-600 text-brand-100 hover:text-white transition"
+                  title="সেটআপ ও ডিপ্লয়মেন্ট গাইড">
+            <i class="fa-solid fa-circle-question text-lg"></i>
+          </button>
+
+          <button onclick="toggleModal('firebase-config-modal')"
+                  class="p-2 rounded-full hover:bg-brand-600 text-brand-100 hover:text-white transition"
+                  title="সেটিংস">
+            <i class="fa-solid fa-gear text-lg"></i>
+          </button>
+
+          <div class="relative">
+            <button onclick="navigateTo('notifications')"
+                    class="p-2 rounded-full hover:bg-brand-600 text-brand-100 hover:text-white transition relative">
+              <i class="fa-regular fa-bell text-xl"></i>
+              <span id="unread-count-badge"
+                    class="hidden absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-brand-700">
+                0
+              </span>
+            </button>
+          </div>
+
+          <div id="auth-header-container"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <div id="toast-container"
+         class="fixed top-20 right-4 left-4 sm:left-auto z-50 sm:max-w-sm space-y-2 pointer-events-none">
+    </div>
+
+    <!-- PWA -->
+    <div id="pwa-install-banner"
+         class="hidden mb-6 bg-gradient-to-r from-accent-600 to-brand-700 text-white p-4 rounded-xl shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+
+      <div class="flex items-center gap-3">
+        <div class="p-3 bg-white/10 rounded-lg text-2xl">
+          <i class="fa-solid fa-mobile-screen-button"></i>
+        </div>
+
+        <div>
+          <h4 class="font-bold">অ্যাপ হিসেবে ইন্সটল করুন</h4>
+          <p class="text-xs text-slate-100">
+            আপনার মোবাইলের হোম স্ক্রিনে যুক্ত করে সহজে ব্যবহার করুন
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="installPWA()"
+                class="px-4 py-2 bg-white text-brand-800 rounded-lg text-xs font-bold shadow hover:bg-slate-100 transition">
+          ইন্সটল করুন
+        </button>
+
+        <button onclick="dismissPWA()"
+                class="p-2 text-white/80 hover:text-white">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+
+    <div id="page-content"></div>
+  </main>
+
+  <!-- Mobile Bottom Navigation -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 shadow-lg px-2 py-1">
+    <div class="grid grid-cols-5 gap-1 text-center">
+
+      <button onclick="navigateTo('home')"
+              class="mobile-nav-item py-1.5 text-slate-500 hover:text-brand-700 flex flex-col items-center"
+              data-page="home">
+        <i class="fa-solid fa-house text-lg"></i>
+        <span class="text-[10px] font-medium mt-0.5">প্রচ্ছদ</span>
+      </button>
+
+      <button onclick="navigateTo('members')"
+              class="mobile-nav-item py-1.5 text-slate-500 hover:text-brand-700 flex flex-col items-center"
+              data-page="members">
+        <i class="fa-solid fa-users text-lg"></i>
+        <span class="text-[10px] font-medium mt-0.5">সদস্যগণ</span>
+      </button>
+
+      <button onclick="navigateTo('contribute')"
+              class="mobile-nav-item py-1.5 text-brand-700 font-bold flex flex-col items-center"
+              data-page="contribute">
+        <div class="w-10 h-10 bg-brand-700 text-white rounded-full flex items-center justify-center shadow-md -mt-4 border-2 border-white">
+          <i class="fa-solid fa-hand-holding-dollar text-base"></i>
+        </div>
+        <span class="text-[10px] mt-0.5">সহযোগিতা</span>
+      </button>
+
+      <button onclick="navigateTo('posts')"
+              class="mobile-nav-item py-1.5 text-slate-500 hover:text-brand-700 flex flex-col items-center"
+              data-page="posts">
+        <i class="fa-solid fa-comments text-lg"></i>
+        <span class="text-[10px] font-medium mt-0.5">মতামত</span>
+      </button>
+
+      <button onclick="navigateTo('notifications')"
+              class="mobile-nav-item py-1.5 text-slate-500 hover:text-brand-700 flex flex-col items-center relative"
+              data-page="notifications">
+        <i class="fa-regular fa-bell text-lg"></i>
+        <span id="mobile-unread-badge"
+              class="hidden absolute top-1 right-3 w-2 h-2 bg-red-500 rounded-full"></span>
+        <span class="text-[10px] font-medium mt-0.5">নোটিফিকেশন</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- DEPLOY GUIDE -->
+  <div id="deploy-guide-modal"
+       class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+
+    <div class="bg-white rounded-2xl max-w-3xl w-full p-6 shadow-2xl my-8 max-h-[90vh] overflow-y-auto border border-slate-100 mobile-safe-modal">
+
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+        <div class="flex items-center gap-2 text-brand-700 font-bold text-lg">
+          <i class="fa-solid fa-rocket"></i>
+          <h3>সহজ ডিপ্লয়মেন্ট ও সেটআপ নির্দেশিকা</h3>
+        </div>
+
+        <button onclick="toggleModal('deploy-guide-modal')"
+                class="text-slate-400 hover:text-slate-600 p-2">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
+
+      <div class="py-4 space-y-4 text-sm text-slate-700 leading-relaxed">
+
+        <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg">
+          <p class="font-semibold text-amber-900">
+            ⚠️ বর্তমান সংস্করণ Browser Storage Mode-এ চলছে।
+          </p>
+
+          <p class="text-xs text-amber-800 mt-1">
+            User account, content এবং admin changes এই browser-এর local storage-এ সংরক্ষিত হবে।
+            সত্যিকারের multi-user production system-এর জন্য Firebase/Supabase backend প্রয়োজন।
+          </p>
+        </div>
+
+        <h4 class="font-bold text-slate-900 text-base border-b pb-1">
+          User Registration
+        </h4>
+
+        <p>
+          User registration করলে কোনো admin approval ছাড়াই account তৈরি হবে এবং user automatically login হবে।
+        </p>
+
+        <h4 class="font-bold text-slate-900 text-base border-b pb-1">
+          Admin Login
+        </h4>
+
+        <p>
+          Login page থেকে <strong>Admin Login</strong> নির্বাচন করে admin password ব্যবহার করুন।
+        </p>
+
+        <h4 class="font-bold text-slate-900 text-base border-b pb-1">
+          Production Setup
+        </h4>
+
+        <p>
+          Commercial multi-user deployment-এর সময় Firebase Authentication + Firestore
+          অথবা Supabase Auth + Database ব্যবহার করা উচিত।
+        </p>
+      </div>
+
+      <div class="pt-4 border-t border-slate-200 flex justify-end">
+        <button onclick="toggleModal('deploy-guide-modal')"
+                class="px-5 py-2 bg-brand-700 text-white font-semibold rounded-lg hover:bg-brand-800 transition">
+          বুঝতে পেরেছি
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIG MODAL -->
+  <div id="firebase-config-modal"
+       class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl mobile-safe-modal">
+
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+        <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+          <i class="fa-solid fa-sliders text-brand-700"></i>
+          সিস্টেম সেটআপ
+        </h3>
+
+        <button onclick="toggleModal('firebase-config-modal')"
+                class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="py-4 space-y-4">
+
+        <div class="bg-blue-50 border border-blue-100 rounded-xl p-3">
+          <p class="text-xs text-blue-800">
+            এই version-এ Firebase config প্রয়োজন নেই। নিচের button শুধু local data reset করার জন্য।
+          </p>
+        </div>
+
+        <button onclick="resetLocalSystem()"
+                class="w-full px-4 py-3 bg-red-600 text-white rounded-xl text-xs font-bold hover:bg-red-700">
+          সমস্ত Local Data Reset করুন
+        </button>
+
+        <p class="text-[11px] text-slate-500">
+          সতর্কতা: এই button ব্যবহার করলে এই browser-এর সব user, settings,
+          notice, project এবং contribution data মুছে যাবে।
+        </p>
+      </div>
+
+      <div class="flex justify-end pt-3 border-t">
+        <button onclick="toggleModal('firebase-config-modal')"
+                class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">
+          বন্ধ করুন
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       SERUAKANDA ASHA ALO FOUNDATION
+       Frontend Local Storage Edition
+       ========================================================= */
+
+    const STORAGE_KEY = 'seruakanda_foundation_v2';
+    const SESSION_KEY = 'seruakanda_session_v2';
+
+    /*
+      IMPORTANT:
+      This is a client-side application.
+      Default admin password = imran0000
+
+      Only the SHA-256 hash is stored in the application state.
+      This is NOT equivalent to server-side authentication.
+      For production, move authentication to Firebase/Supabase/backend.
+    */
+
+    const DEFAULT_ADMIN_PASSWORD_HASH =
+      'aeff49790f3b72e48bb8650d30be19d9572a3370aa68181fcc23de1717fb3dad';
+
+    const DEFAULT_STATE = {
+      settings: {
+        orgName: 'সেরুয়াকান্দা আশা আলো ফাউন্ডেশন',
+        tagline: 'স্বেচ্ছায় সহযোগিতা • সম্মিলিত উন্নয়ন • মানবিক সহায়তা',
+        logoUrl: '',
+        bkashNumber: '',
+        bkashAccountType: 'Personal',
+        contactNumber: '',
+        email: '',
+        address: '',
+        facebookUrl: '',
+        about: 'সেরুয়াকান্দা আশা আলো ফাউন্ডেশনের লক্ষ্য হলো স্বেচ্ছাসেবী উদ্যোগের মাধ্যমে মানুষের পাশে দাঁড়ানো এবং সম্মিলিত উন্নয়নে কাজ করা।',
+        privacyPublicNames: false,
+        primaryColor: '#15803d',
+        accentColor: '#0ea5e9',
+        textColor: '#0f172a',
+        backgroundColor: '#f8fafc',
+        footerText: 'সেরুয়াকান্দা আশা আলো ফাউন্ডেশন — সম্মিলিত উন্নয়নের প্রত্যয়ে',
+        media: []
+      },
+
+      users: [],
+      contributions: [],
+      posts: [],
+      announcements: [],
+      projects: [],
+      notifications: [],
+      auditLogs: [],
+
+      admin: {
+        email: 'admin@seruakanda.local',
+        passwordHash: DEFAULT_ADMIN_PASSWORD_HASH
+      },
+
+      session: null,
+      currentPage: 'home'
+    };
+
+    window.APP_STATE = structuredClone(DEFAULT_STATE);
+
+    /* =========================================================
+       BASIC HELPERS
+       ========================================================= */
+
+    function clone(obj) {
+      return JSON.parse(JSON.stringify(obj));
+    }
+
+    function normalizeMobile(value) {
+      let v = String(value || '').trim().replace(/[^\d+]/g, '');
+
+      if (v.startsWith('+880')) {
+        v = '0' + v.substring(4);
+      }
+
+      if (v.startsWith('880')) {
+        v = '0' + v.substring(3);
+      }
+
+      return v;
+    }
+
+    function isValidBangladeshMobile(value) {
+      const mobile = normalizeMobile(value);
+      return /^01[3-9]\d{8}$/.test(mobile);
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function todayBangla() {
+      return new Date().toLocaleDateString('bn-BD', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+    }
+
+    function generateId(prefix) {
+      return prefix + '_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+    }
+
+    async function sha256(value) {
+      const data = new TextEncoder().encode(value);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+
+      return Array.from(new Uint8Array(hashBuffer))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+    }
+
+    function currentUser() {
+      const id = window.APP_STATE.session?.userId;
+
+      if (!id) return null;
+
+      return window.APP_STATE.users.find(u => u.id === id) || null;
+    }
+
+    function isLoggedIn() {
+      return !!currentUser();
+    }
+
+    function isAdmin() {
+      return window.APP_STATE.session?.role === 'Admin';
+    }
+
+    function isAdminOrMod() {
+      return isAdmin();
+    }
+
+    /* =========================================================
+       STORAGE
+       ========================================================= */
+
+    function saveState() {
+      try {
+        const saveData = clone(window.APP_STATE);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(saveData));
+
+        if (window.APP_STATE.session) {
+          localStorage.setItem(
+            SESSION_KEY,
+            JSON.stringify(window.APP_STATE.session)
+          );
+        } else {
+          localStorage.removeItem(SESSION_KEY);
+        }
+
+        return true;
+      } catch (error) {
+        console.error('Storage save error:', error);
+        showToast('ডাটা সংরক্ষণ করা সম্ভব হয়নি। Browser storage পরীক্ষা করুন।', 'error');
+        return false;
+      }
+    }
+
+    function loadState() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+
+        if (stored) {
+          const parsed = JSON.parse(stored);
+
+          window.APP_STATE = {
+            ...clone(DEFAULT_STATE),
+            ...parsed,
+            settings: {
+              ...clone(DEFAULT_STATE.settings),
+              ...(parsed.settings || {})
+            },
+            users: Array.isArray(parsed.users) ? parsed.users : [],
+            contributions: Array.isArray(parsed.contributions) ? parsed.contributions : [],
+            posts: Array.isArray(parsed.posts) ? parsed.posts : [],
+            announcements: Array.isArray(parsed.announcements) ? parsed.announcements : [],
+            projects: Array.isArray(parsed.projects) ? parsed.projects : [],
+            notifications: Array.isArray(parsed.notifications) ? parsed.notifications : [],
+            auditLogs: Array.isArray(parsed.auditLogs) ? parsed.auditLogs : [],
+            admin: {
+              ...clone(DEFAULT_STATE.admin),
+              ...(parsed.admin || {})
+            }
+          };
+        }
+
+        const storedSession = localStorage.getItem(SESSION_KEY);
+
+        if (storedSession) {
+          const session = JSON.parse(storedSession);
+
+          if (
+            session &&
+            session.userId &&
+            session.role &&
+            window.APP_STATE.users.some(u => u.id === session.userId)
+          ) {
+            window.APP_STATE.session = session;
+          } else {
+            window.APP_STATE.session = null;
+            localStorage.removeItem(SESSION_KEY);
+          }
+        }
+
+      } catch (error) {
+        console.error('Storage load error:', error);
+
+        window.APP_STATE = clone(DEFAULT_STATE);
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(SESSION_KEY);
+      }
+
+      applySettings();
+    }
+
+    function resetLocalSystem() {
+      const ok = confirm(
+        'সত্যিই কি সব local data মুছে ফেলতে চান?\n\nUser, settings, notice, project, contribution—সব মুছে যাবে।'
+      );
+
+      if (!ok) return;
+
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(SESSION_KEY);
+
+      location.reload();
+    }
+
+    /* =========================================================
+       SETTINGS / UI
+       ========================================================= */
+
+    function applySettings() {
+      const s = window.APP_STATE.settings;
+
+      document.title = s.orgName || DEFAULT_STATE.settings.orgName;
+
+      const headerName = document.getElementById('org-name-header');
+      const headerTagline = document.getElementById('org-tagline-header');
+
+      if (headerName) {
+        headerName.textContent = s.orgName || DEFAULT_STATE.settings.orgName;
+      }
+
+      if (headerTagline) {
+        headerTagline.textContent = s.tagline || '';
+      }
+
+      document.documentElement.style.setProperty('--admin-primary', s.primaryColor);
+      document.documentElement.style.setProperty('--admin-accent', s.accentColor);
+      document.documentElement.style.setProperty('--admin-text', s.textColor);
+      document.documentElement.style.setProperty('--admin-background', s.backgroundColor);
+
+      document.body.style.backgroundColor = s.backgroundColor || '#f8fafc';
+      document.body.style.color = s.textColor || '#0f172a';
+
+      const logo = document.getElementById('header-logo');
+
+      if (logo) {
+        if (s.logoUrl) {
+          logo.innerHTML = `
+            <img src="${escapeHTML(s.logoUrl)}"
+                 alt="Logo"
+                 class="w-full h-full object-cover"
+                 onerror="this.style.display='none';this.parentElement.innerHTML='<i class=&quot;fa-solid font-bold text-brand-700&quot;>আ</i>';">
+          `;
+        } else {
+          logo.innerHTML = '<i class="fa-solid font-bold text-brand-700">আ</i>';
+        }
+      }
+    }
+
+    function updateNotificationBadges() {
+      const count = window.APP_STATE.notifications.length;
+
+      const desktop = document.getElementById('unread-count-badge');
+      const mobile = document.getElementById('mobile-unread-badge');
+
+      if (desktop) {
+        if (count > 0) {
+          desktop.textContent = Math.min(count, 99);
+          desktop.classList.remove('hidden');
+        } else {
+          desktop.classList.add('hidden');
+        }
+      }
+
+      if (mobile) {
+        mobile.classList.toggle('hidden', count === 0);
+      }
+    }
+
+    function calculateStats() {
+      const verified = window.APP_STATE.contributions.filter(
+        c => c.status === 'verified'
+      );
+
+      const totalVerifiedSum = verified.reduce(
+        (sum, c) => sum + Number(c.amount || 0),
+        0
+      );
+
+      const ongoingProjects = window.APP_STATE.projects.filter(
+        p => p.status === 'ongoing'
+      ).length;
+
+      const completedProjects = window.APP_STATE.projects.filter(
+        p => p.status === 'completed'
+      ).length;
+
+      return {
+        totalMembers: window.APP_STATE.users.length,
+        totalVerifiedSum,
+        ongoingProjects,
+        completedProjects
+      };
+    }
+
+    function maskMobile(mobile) {
+      const m = normalizeMobile(mobile);
+
+      if (m.length < 11) return '017****1234';
+
+      return m.substring(0, 3) + '****' + m.substring(7);
+    }
+
+    /* =========================================================
+       NAVIGATION
+       ========================================================= */
+
+    window.navigateTo = function(pageId, params = {}) {
+
+      if (pageId === 'admin' && !isAdmin()) {
+        showToast('অ্যাডমিন প্যানেলে প্রবেশের অনুমতি নেই।', 'error');
+        pageId = 'login';
+      }
+
+      if (
+        ['dashboard'].includes(pageId) &&
+        !isLoggedIn()
+      ) {
+        showToast('এই পেজ দেখতে আগে লগইন করুন।', 'error');
+        pageId = 'login';
+      }
+
+      window.APP_STATE.currentPage = pageId;
+
+      document.querySelectorAll('.mobile-nav-item').forEach(el => {
+        if (el.dataset.page === pageId) {
+          el.classList.add('text-brand-700');
+          el.classList.remove('text-slate-500');
+        } else if (el.dataset.page !== 'contribute') {
+          el.classList.remove('text-brand-700');
+          el.classList.add('text-slate-500');
+        }
+      });
+
+      const container = document.getElementById('page-content');
+
+      if (!container) return;
+
+      container.innerHTML = '';
+
+      switch (pageId) {
+
+        case 'home':
+          container.innerHTML = renderHomePage();
+          break;
+
+        case 'transparency':
+          container.innerHTML = renderTransparencyPage();
+          break;
+
+        case 'contribute':
+          container.innerHTML = renderContributePage();
+          break;
+
+        case 'posts':
+          container.innerHTML = renderPostsPage();
+          break;
+
+        case 'projects':
+          container.innerHTML = renderProjectsPage();
+          break;
+
+        case 'notifications':
+          container.innerHTML = renderNotificationsPage();
+          break;
+
+        case 'login':
+          container.innerHTML = renderLoginPage();
+          break;
+
+        case 'register':
+          container.innerHTML = renderRegisterPage();
+          break;
+
+        case 'dashboard':
+          container.innerHTML = renderDashboardPage();
+          break;
+
+        case 'admin':
+          container.innerHTML = renderAdminPanel(params.tab || 'overview');
+          break;
+
+        case 'members':
+          container.innerHTML = renderPublicMembersPage();
+          break;
+
+        default:
+          container.innerHTML = renderHomePage();
+      }
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
+      renderAuthHeader();
+      updateNotificationBadges();
+      applySettings();
+    };
+
+    function refreshCurrentPage() {
+      const page = window.APP_STATE.currentPage || 'home';
+
+      if (page === 'admin') {
+        navigateTo('admin', { tab: 'overview' });
+      } else {
+        navigateTo(page);
+      }
+    }
+
+    /* =========================================================
+       HOME
+       ========================================================= */
+
+    function renderHomePage() {
+      const stats = calculateStats();
+
+      return `
+        <div class="space-y-8 animate-fade-in">
+
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-800 via-brand-700 to-slate-900 text-white p-6 sm:p-10 shadow-xl">
+
+            <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl font-bold select-none pointer-events-none">
+              আশা আলো
+            </div>
+
+            <div class="relative z-10 max-w-2xl space-y-4">
+
+              <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-xs font-medium text-brand-100 border border-white/20">
+                <i class="fa-solid fa-leaf text-brand-500 mr-1"></i>
+                অরাজনৈতিক ও সামাজিক সেবা সংস্থা
+              </span>
+
+              <h2 class="text-2xl sm:text-4xl font-extrabold leading-tight">
+                আপনার সামর্থ্য অনুযায়ী সহযোগিতা করুন,
+                <br/>
+                <span class="text-amber-400">
+                  সম্মিলিতভাবে গড়ে তুলি সুন্দর সমাজ।
+                </span>
+              </h2>
+
+              <p class="text-sm sm:text-base text-slate-200 leading-relaxed font-light">
+                ${escapeHTML(window.APP_STATE.settings.tagline)}
+              </p>
+
+              <div class="pt-2 flex flex-wrap gap-3">
+
+                <button onclick="navigateTo('contribute')"
+                        class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl shadow-lg transition flex items-center gap-2">
+                  <i class="fa-solid fa-heart"></i>
+                  সহযোগিতা করুন
+                </button>
+
+                <button onclick="navigateTo('register')"
+                        class="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white font-medium rounded-xl backdrop-blur border border-white/30 transition flex items-center gap-2">
+                  <i class="fa-solid fa-user-plus"></i>
+                  সদস্য হন
+                </button>
+
+                <button onclick="navigateTo('transparency')"
+                        class="px-4 py-2.5 bg-slate-800/60 hover:bg-slate-800 text-slate-200 text-sm font-medium rounded-xl transition">
+                  স্বচ্ছতা ও হিসাব
+                </button>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center text-lg font-bold">
+                  <i class="fa-solid fa-users"></i>
+                </div>
+
+                <div>
+                  <p class="text-xs text-slate-500">মোট সদস্য</p>
+                  <h3 class="text-xl font-bold text-slate-800">
+                    ${stats.totalMembers} জন
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg font-bold">
+                  <i class="fa-solid fa-vault"></i>
+                </div>
+
+                <div>
+                  <p class="text-xs text-slate-500">যাচাইকৃত সহযোগিতা</p>
+                  <h3 class="text-xl font-bold text-emerald-700">
+                    ৳ ${stats.totalVerifiedSum.toLocaleString('bn-BD')}
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-accent-50 text-accent-600 flex items-center justify-center text-lg font-bold">
+                  <i class="fa-solid fa-spinner"></i>
+                </div>
+
+                <div>
+                  <p class="text-xs text-slate-500">চলমান উদ্যোগ</p>
+                  <h3 class="text-xl font-bold text-slate-800">
+                    ${stats.ongoingProjects} টি
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-lg font-bold">
+                  <i class="fa-solid fa-circle-check"></i>
+                </div>
+
+                <div>
+                  <p class="text-xs text-slate-500">সম্পন্ন উদ্যোগ</p>
+                  <h3 class="text-xl font-bold text-slate-800">
+                    ${stats.completedProjects} টি
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="bg-amber-50/80 border border-amber-200/80 rounded-2xl p-4 text-xs text-amber-900 flex items-start gap-3">
+            <i class="fa-solid fa-triangle-exclamation text-amber-600 text-lg mt-0.5"></i>
+
+            <p class="leading-relaxed">
+              <strong>আইনি ও স্বচ্ছতা তথ্য:</strong>
+              এই ওয়েবসাইটের মাধ্যমে প্রদত্ত আর্থিক সহযোগিতা সম্পূর্ণরূপে স্বেচ্ছামূলক।
+              কোনো সদস্যের জন্য নির্দিষ্ট পরিমাণ অর্থ প্রদান বাধ্যতামূলক নয়।
+            </p>
+          </div>
+
+          <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-4">
+
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-bullhorn text-brand-600"></i>
+                সাম্প্রতিক ঘোষণা ও নোটিশ
+              </h3>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+
+              ${
+                window.APP_STATE.announcements.length === 0
+                ? `
+                  <div class="md:col-span-2 p-6 rounded-xl bg-slate-50 text-center text-xs text-slate-400">
+                    এখনো কোনো নোটিশ প্রকাশ করা হয়নি।
+                  </div>
+                `
+                :
+                window.APP_STATE.announcements.map(ann => `
+                  <div class="p-4 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition space-y-2">
+
+                    <div class="flex items-center justify-between gap-2">
+
+                      <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${
+                        ann.priority === 'High' || ann.priority === 'Important'
+                        ? 'bg-red-100 text-red-700'
+                        : 'bg-slate-200 text-slate-700'
+                      }">
+                        ${
+                          ann.priority === 'High' || ann.priority === 'Important'
+                          ? 'জরুরী'
+                          : 'সাধারণ'
+                        }
+                      </span>
+
+                      <span class="text-xs text-slate-400">
+                        <i class="fa-regular fa-calendar"></i>
+                        ${escapeHTML(ann.date)}
+                      </span>
+                    </div>
+
+                    <h4 class="font-bold text-slate-800 text-sm">
+                      ${escapeHTML(ann.title)}
+                    </h4>
+
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                      ${escapeHTML(ann.content)}
+                    </p>
+                  </div>
+                `).join('')
+              }
+
+            </div>
+          </div>
+
+          <div class="space-y-4">
+
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-diagram-project text-brand-600"></i>
+                আমাদের সাম্প্রতিক কার্যক্রম
+              </h3>
+
+              <button onclick="navigateTo('projects')"
+                      class="text-xs font-semibold text-brand-700 hover:underline">
+                সবগুলো দেখুন →
+              </button>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-5">
+
+              ${
+                window.APP_STATE.projects.length === 0
+                ?
+                `
+                  <div class="md:col-span-3 bg-white p-8 rounded-2xl text-center text-xs text-slate-400">
+                    এখনো কোনো কার্যক্রম যোগ করা হয়নি।
+                  </div>
+                `
+                :
+                window.APP_STATE.projects.slice(0, 3).map(proj => `
+                  <div class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm flex flex-col">
+
+                    <img src="${escapeHTML(proj.imageUrl || 'https://placehold.co/600x400/e2e8f0/475569?text=কার্যক্রম')}"
+                         class="h-36 w-full object-cover"
+                         onerror="this.src='https://placehold.co/600x400/e2e8f0/475569?text=কার্যক্রম'"
+                         alt="${escapeHTML(proj.title)}" />
+
+                    <div class="p-4 flex-grow flex flex-col justify-between space-y-3">
+
+                      <div>
+
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                          proj.status === 'ongoing'
+                          ? 'bg-amber-100 text-amber-800'
+                          : proj.status === 'completed'
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : 'bg-slate-100 text-slate-700'
+                        } uppercase">
+
+                          ${
+                            proj.status === 'ongoing'
+                            ? 'চলমান'
+                            : proj.status === 'completed'
+                            ? 'সম্পন্ন'
+                            : 'পরিকল্পনাধীন'
+                          }
+
+                        </span>
+
+                        <h4 class="font-bold text-slate-800 text-sm mt-1">
+                          ${escapeHTML(proj.title)}
+                        </h4>
+
+                        <p class="text-xs text-slate-500 mt-1 line-clamp-2">
+                          ${escapeHTML(proj.description)}
+                        </p>
+                      </div>
+
+                      <div class="pt-2 border-t flex justify-between items-center text-xs text-slate-600">
+                        <span>
+                          বাজেট:
+                          <strong>${escapeHTML(proj.budget || 'নির্ধারিত নয়')}</strong>
+                        </span>
+                      </div>
+
+                    </div>
+                  </div>
+                `).join('')
+              }
+
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    /* =========================================================
+       CONTRIBUTION
+       ========================================================= */
+
+    function renderContributePage() {
+      const s = window.APP_STATE.settings;
+
+      return `
+        <div class="max-w-2xl mx-auto space-y-6 animate-fade-in">
+
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 text-center space-y-3">
+
+            <div class="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
+              ৳
+            </div>
+
+            <h2 class="text-xl font-bold text-slate-800">
+              স্বেচ্ছায় আর্থিক সহযোগিতা
+            </h2>
+
+            <p class="text-xs text-slate-600 max-w-md mx-auto">
+              ফাউন্ডেশনের কোনো নির্দিষ্ট বাধ্যবাধকতা নেই।
+              আপনার সামর্থ্য ও ইচ্ছানুযায়ী যেকোনো পরিমাণ অর্থ প্রদান করতে পারেন।
+            </p>
+          </div>
+
+          <div class="bg-gradient-to-r from-pink-600 to-rose-600 rounded-2xl p-6 text-white shadow-lg space-y-4">
+
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold bg-white/20 px-2.5 py-1 rounded-full uppercase">
+                bKash পেমেন্ট নির্দেশিকা
+              </span>
+
+              <span class="text-xs text-pink-100">
+                ${escapeHTML(s.bkashAccountType || 'Personal')}
+              </span>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20 flex items-center justify-between gap-3">
+
+              <div class="min-w-0">
+                <p class="text-xs text-pink-100">বিকাশ নম্বর:</p>
+
+                <p class="text-xl sm:text-2xl font-extrabold tracking-wider break-all">
+                  ${escapeHTML(s.bkashNumber || 'নম্বর এখনো দেওয়া হয়নি')}
+                </p>
+              </div>
+
+              ${
+                s.bkashNumber
+                ?
+                `
+                  <button onclick="copyBkashNumber()"
+                          class="shrink-0 px-4 py-2 bg-white text-pink-700 font-bold text-xs rounded-lg hover:bg-pink-50 transition shadow">
+                    <i class="fa-regular fa-copy"></i>
+                    কপি করুন
+                  </button>
+                `
+                : ''
+              }
+
+            </div>
+
+            <div class="text-xs space-y-1.5 text-pink-50 leading-relaxed">
+              <p>১. আপনার বিকাশ অ্যাপ থেকে Send Money অপশনে যান।</p>
+              <p>২. উপরের নম্বরে আপনার ইচ্ছানুযায়ী টাকা পাঠান।</p>
+              <p>৩. টাকা পাঠানোর পর Transaction ID নিচে প্রদান করুন।</p>
+            </div>
+          </div>
+
+          <form onsubmit="handleContributionSubmit(event)"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-5">
+
+            <h3 class="font-bold text-slate-800 text-base border-b pb-2">
+              সহযোগিতার তথ্য পূরণ করুন
+            </h3>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-2">
+                সহযোগিতার পরিমাণ বাছাই করুন:
+              </label>
+
+              <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                ${[50,100,200,500,1000,2000].map(amt => `
+                  <button type="button"
+                          onclick="setQuickAmount(${amt})"
+                          class="py-2 px-3 bg-slate-50 hover:bg-brand-50 hover:text-brand-700 border border-slate-200 hover:border-brand-300 rounded-xl text-xs font-bold transition text-slate-700">
+                    ৳${amt}
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">
+                টাকার পরিমাণ (৳)
+                <span class="text-red-500">*</span>
+              </label>
+
+              <input type="number"
+                     id="contrib-amount"
+                     required
+                     min="10"
+                     step="1"
+                     placeholder="যেমন: 500"
+                     class="w-full text-sm p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none" />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">
+                  আপনার বিকাশ নম্বর (ঐচ্ছিক)
+                </label>
+
+                <input type="text"
+                       id="contrib-sender-bkash"
+                       placeholder="017xxxxxxxx"
+                       class="w-full text-sm p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">
+                  Transaction ID (TrxID)
+                  <span class="text-red-500">*</span>
+                </label>
+
+                <input type="text"
+                       id="contrib-txnid"
+                       required
+                       maxlength="50"
+                       placeholder="যেমন: BK92837123"
+                       class="w-full text-sm p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none uppercase font-mono" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">
+                মন্তব্য বা নোট (ঐচ্ছিক)
+              </label>
+
+              <textarea id="contrib-note"
+                        rows="2"
+                        maxlength="500"
+                        placeholder="যেমন: সাধারণ অনুদান / শিক্ষা ফান্ড"
+                        class="w-full text-sm p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none"></textarea>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-500 flex items-center gap-2">
+              <i class="fa-solid fa-shield-halved text-brand-600 text-base"></i>
+              <span>
+                Transaction ID দেওয়ার পর Admin verification সম্পন্ন হলে
+                আপনার সহযোগিতা নিশ্চিত হিসেবে আপডেট হবে।
+              </span>
+            </div>
+
+            <button type="submit"
+                    class="w-full py-3.5 bg-brand-700 hover:bg-brand-800 text-white font-bold rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-paper-plane"></i>
+              সহযোগিতা জমা দিন
+            </button>
+          </form>
+        </div>
+      `;
+    }
+
+    /* =========================================================
+       TRANSPARENCY
+       ========================================================= */
+
+    function renderTransparencyPage() {
+      const stats = calculateStats();
+
+      const verified = window.APP_STATE.contributions.filter(
+        c => c.status === 'verified'
+      );
+
+      return `
+        <div class="space-y-6 animate-fade-in">
+
+          <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+
+            <div>
+              <h2 class="text-xl font-bold text-slate-800">
+                স্বচ্ছতা ও আর্থিক রিপোর্ট
+              </h2>
+
+              <p class="text-xs text-slate-500 mt-1">
+                সংগঠনের সকল যাচাইকৃত অনুদানের বিস্তারিত তালিকা ও নিয়মিত হিসাব
+              </p>
+            </div>
+
+            <div class="bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-100 text-emerald-800">
+              <p class="text-[10px] text-emerald-600 uppercase font-bold">
+                মোট সর্বমোট তহবিল
+              </p>
+
+              <p class="text-xl font-black">
+                ৳ ${stats.totalVerifiedSum.toLocaleString('bn-BD')}
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+            <div class="bg-white p-4 rounded-xl border border-slate-100">
+              <p class="text-xs text-slate-500">মোট যাচাইকৃত দাতা</p>
+              <p class="text-lg font-bold text-slate-800 mt-0.5">
+                ${verified.length} টি জমা
+              </p>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl border border-slate-100">
+              <p class="text-xs text-slate-500">মোট যাচাইকৃত অর্থ</p>
+              <p class="text-lg font-bold text-slate-800 mt-0.5">
+                ৳ ${stats.totalVerifiedSum.toLocaleString('bn-BD')}
+              </p>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl border border-slate-100">
+              <p class="text-xs text-slate-500">গড় সহযোগিতা</p>
+              <p class="text-lg font-bold text-slate-800 mt-0.5">
+                ৳ ${verified.length > 0
+                  ? Math.round(stats.totalVerifiedSum / verified.length).toLocaleString('bn-BD')
+                  : '০'}
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+
+            <div class="p-4 border-b border-slate-100 flex items-center justify-between gap-2">
+              <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-brand-600"></i>
+                যাচাইকৃত সহযোগিতার ইতিহাস
+              </h3>
+
+              <span class="text-xs text-slate-400">
+                গোপনীয়তা রক্ষার্থে নম্বর সংক্ষেপিত
+              </span>
+            </div>
+
+            <div class="overflow-x-auto">
+
+              <table class="safe-table text-left text-xs text-slate-700">
+
+                <thead class="bg-slate-50 text-slate-500 font-semibold uppercase border-b border-slate-100">
+                  <tr>
+                    <th class="p-3">দাতার নাম</th>
+                    <th class="p-3">মোবাইল</th>
+                    <th class="p-3">পরিমাণ (৳)</th>
+                    <th class="p-3">তারিখ</th>
+                    <th class="p-3">স্ট্যাটাস</th>
+                  </tr>
+                </thead>
+
+                <tbody class="divide-y divide-slate-100">
+
+                  ${
+                    verified.length === 0
+                    ?
+                    `
+                      <tr>
+                        <td colspan="5"
+                            class="p-6 text-center text-slate-400">
+                          এখনো কোনো যাচাইকৃত আর্থিক রেকর্ড নেই
+                        </td>
+                      </tr>
+                    `
+                    :
+                    verified.map(c => `
+                      <tr class="hover:bg-slate-50/80 transition">
+
+                        <td class="p-3 font-semibold text-slate-800">
+                          ${
+                            window.APP_STATE.settings.privacyPublicNames
+                            ? 'একজন সদস্য'
+                            : escapeHTML(c.memberName || 'স্বেচ্ছাসেবক')
+                          }
+                        </td>
+
+                        <td class="p-3 font-mono text-slate-500">
+                          ${maskMobile(c.mobile || '')}
+                        </td>
+
+                        <td class="p-3 font-bold text-emerald-700">
+                          ৳ ${Number(c.amount || 0).toLocaleString('bn-BD')}
+                        </td>
+
+                        <td class="p-3 text-slate-500">
+                          ${escapeHTML(c.date || '')}
+                        </td>
+
+                        <td class="p-3">
+                          <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold rounded-full text-[10px]">
+                            যাচাইকৃত
+                          </span>
+                        </td>
+
+                      </tr>
+                    `).join('')
+                  }
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* =========================================================
+       POSTS
+       ========================================================= */
+
+    function renderPostsPage() {
+      const approvedPosts = window.APP_STATE.posts.filter(
+        p => p.status === 'approved'
+      );
+
+      return `
+        <div class="max-w-3xl mx-auto space-y-6 animate-fade-in">
+
+          <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex items-center justify-between gap-3">
+
+            <div>
+              <h2 class="text-xl font-bold text-slate-800">
+                সদস্যদের মতামত ও আলোচনা
+              </h2>
+
+              <p class="text-xs text-slate-500 mt-0.5">
+                সংগঠন সম্পর্কিত আপনার সুচিন্তিত মতামত প্রকাশ করুন
+              </p>
+            </div>
+
+            <button onclick="openNewPostModal()"
+                    class="px-4 py-2 bg-brand-700 hover:bg-brand-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center gap-1.5 shrink-0">
+              <i class="fa-solid fa-pen"></i>
+              মতামত লিখুন
+            </button>
+          </div>
+
+          <div class="space-y-4">
+
+            ${
+              approvedPosts.length === 0
+              ?
+              `
+                <div class="bg-white p-8 rounded-2xl text-center text-slate-400 space-y-2">
+                  <i class="fa-regular fa-comments text-3xl"></i>
+                  <p class="text-sm">
+                    এখনো কোনো মতামত প্রকাশিত হয়নি।
+                  </p>
+                </div>
+              `
+              :
+              approvedPosts.map(post => `
+                <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm space-y-3">
+
+                  <div class="flex items-center justify-between">
+
+                    <div class="flex items-center space-x-3">
+
+                      <div class="w-9 h-9 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm">
+                        ${escapeHTML((post.author || 'স').charAt(0))}
+                      </div>
+
+                      <div>
+                        <h4 class="font-bold text-slate-800 text-sm leading-tight">
+                          ${escapeHTML(post.author)}
+                        </h4>
+
+                        <p class="text-[10px] text-slate-400">
+                          ${escapeHTML(post.authorRole || 'সদস্য')} •
+                          ${escapeHTML(post.date || '')}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <h3 class="font-bold text-slate-800 text-base">
+                    ${escapeHTML(post.title)}
+                  </h3>
+
+                  <p class="text-xs text-slate-600 leading-relaxed">
+                    ${escapeHTML(post.content)}
+                  </p>
+
+                  <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+
+                    <button onclick="likePost('${escapeHTML(post.id)}')"
+                            class="flex items-center gap-1.5 hover:text-red-500 transition">
+                      <i class="fa-regular fa-heart"></i>
+                      <span>${Number(post.likes || 0)}</span>
+                    </button>
+
+                    <span class="text-slate-400">
+                      <i class="fa-regular fa-comment"></i>
+                      ${post.comments ? post.comments.length : 0} টি মন্তব্য
+                    </span>
+                  </div>
+
+                  ${
+                    post.comments && post.comments.length > 0
+                    ?
+                    `
+                      <div class="bg-slate-50 p-3 rounded-xl space-y-2 mt-2">
+
+                        ${post.comments.map(c => `
+                          <div class="text-xs space-y-0.5">
+                            <span class="font-bold text-slate-700">
+                              ${escapeHTML(c.author)}:
+                            </span>
+
+                            <span class="text-slate-600">
+                              ${escapeHTML(c.text)}
+                            </span>
+                          </div>
+                        `).join('')}
+
+                      </div>
+                    `
+                    : ''
+                  }
+
+                  <div class="flex gap-2 pt-1">
+
+                    <input type="text"
+                           id="comment-input-${escapeHTML(post.id)}"
+                           maxlength="300"
+                           placeholder="মন্তব্য লিখুন..."
+                           class="flex-grow min-w-0 text-xs p-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-500" />
+
+                    <button onclick="submitComment('${escapeHTML(post.id)}')"
+                            class="px-3 py-2 bg-slate-800 text-white rounded-xl text-xs font-semibold hover:bg-slate-900 shrink-0">
+                      পাঠান
+                    </button>
+
+                  </div>
+                </div>
+              `).join('')
+            }
+
+          </div>
+        </div>
+      `;
+    }
+
+    /* =========================================================
+       PROJECTS
+       ========================================================= */
+
+    function renderProjectsPage() {
+      return `
+        <div class="space-y-6 animate-fade-in">
+
+          <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+
+            <h2 class="text-xl font-bold text-slate-800">
+              সংগঠনের সকল কার্যক্রম ও প্রকল্প
+            </h2>
+
+            <p class="text-xs text-slate-500 mt-1">
+              সামাজিক ও মানবিক উন্নয়নে আমাদের গৃহীত উদ্যোগসমূহ
+            </p>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-5">
+
+            ${
+              window.APP_STATE.projects.length === 0
+              ?
+              `
+                <div class="md:col-span-3 bg-white p-8 rounded-2xl text-center text-slate-400 text-xs">
+                  এখনো কোনো কার্যক্রম যোগ করা হয়নি।
+                </div>
+              `
+              :
+              window.APP_STATE.projects.map(proj => `
+                <div class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm flex flex-col">
+
+                  <img src="${escapeHTML(proj.imageUrl || 'https://placehold.co/600x400/e2e8f0/475569?text=কার্যক্রম')}"
+                       class="h-40 w-full object-cover"
+                       onerror="this.src='https://placehold.co/600x400/e2e8f0/475569?text=কার্যক্রম'"
+                       alt="${escapeHTML(proj.title)}" />
+
+                  <div class="p-4 flex-grow flex flex-col justify-between space-y-3">
+
+                    <div>
+
+                      <span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                        proj.status === 'ongoing'
+                        ? 'bg-amber-100 text-amber-800'
+                        : proj.status === 'completed'
+                        ? 'bg-emerald-100 text-emerald-800'
+                        : 'bg-slate-100 text-slate-700'
+                      }">
+                        ${
+                          proj.status === 'ongoing'
+                          ? 'চলমান'
+                          : proj.status === 'completed'
+                          ? 'সম্পন্ন'
+                          : 'পরিকল্পনাধীন'
+                        }
+                      </span>
+
+                      <h4 class="font-bold text-slate-800 text-sm mt-1">
+                        ${escapeHTML(proj.title)}
+                      </h4>
+
+                      <p class="text-xs text-slate-500 mt-1">
+                        ${escapeHTML(proj.description)}
+                      </p>
+
+                    </div>
+
+                    <div class="pt-2 border-t flex justify-between items-center text-xs text-slate-600">
+                      <span>
+                        বাজেট:
+                        <strong>${escapeHTML(proj.budget || 'নির্ধারিত নয়')}</strong>
+                      </span>
+                    </div>
+
+                  </div>
+                </div>
+              `).join('')
+            }
+
+          </div>
+        </div>
+      `;
+    }
+
+    /* =========================================================
+       NOTIFICATIONS
+       ========================================================= */
+
+    function renderNotificationsPage() {
+      const notifs = window.APP_STATE.notifications;
+
+      return `
+        <div class="max-w-2xl mx-auto space-y-4 animate-fade-in">
+
+          <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex items-center justify-between gap-3">
+
+            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-regular fa-bell text-brand-600"></i>
+              নোটিফিকেশন সেন্টার
+            </h2>
+
+            <button onclick="requestPushPermission()"
+                    class="text-xs font-semibold text-brand-700 hover:underline">
+              পুশ নোটিফিকেশন অন করুন
+            </button>
+          </div>
+
+          <div class="space-y-3">
+
+            ${
+              notifs.length === 0
+              ?
+              `
+                <div class="bg-white p-8 rounded-2xl text-center text-slate-400 text-xs">
+                  কোনো নতুন নোটিফিকেশন নেই
+                </div>
+              `
+              :
+              notifs.map(n => `
+                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex items-start gap-3">
+
+                  <div class="p-2 bg-brand-50 text-brand-700 rounded-lg text-sm">
+                    <i class="fa-solid fa-info"></i>
+                  </div>
+
+                  <div>
+                    <h4 class="font-bold text-slate-800 text-xs">
+                      ${escapeHTML(n.title)}
+                    </h4>
+
+                    <p class="text-xs text-slate-600 mt-0.5">
+                      ${escapeHTML(n.message)}
+                    </p>
+
+                    <span class="text-[10px] text-slate-400 mt-1 block">
+                      ${escapeHTML(n.date || 'আজ')}
+                    </span>
+                  </div>
+                </div>
+              `).join('')
+            }
+
+          </div>
+        </div>
+      `;
+    }
+
+    /* =========================================================
+       LOGIN
+       ========================================================= */
+
+    function renderLoginPage() {
+      return `
+        <div class="max-w-md mx-auto bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-5 animate-fade-in">
+
+          <div class="text-center space-y-1">
+
+            <h2 class="text-xl font-bold text-slate-800">
+              সদস্য লগইন
+            </h2>
+
+            <p class="text-xs text-slate-500">
+              আপনার মোবাইল নম্বর/ইমেইল ও পাসওয়ার্ড দিন
+            </p>
+
+          </div>
+
+          <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">
+                ইমেইল বা মোবাইল
+              </label>
+
+              <input type="text"
+                     id="login-id"
+                     required
+                     autocomplete="username"
+                     placeholder="017xxxxxxxx বা email@example.com"
+                     class="w-full text-xs p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" />
+            </div>
+
+            <div>
+
+              <label class="block text-xs font-semibold text-slate-700 mb-1">
+                পাসওয়ার্ড
+              </label>
+
+              <input type="password"
+                     id="login-password"
+                     required
+                     autocomplete="current-password"
+                     placeholder="পাসওয়ার্ড"
+                     class="w-full text-xs p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" />
+            </div>
+
+            <button type="submit"
+                    class="w-full py-3 bg-brand-700 text-white font-bold rounded-xl text-xs hover:bg-brand-800 transition">
+              লগইন করুন
+            </button>
+          </form>
+
+          <div class="border-t pt-4 space-y-3">
+
+            <button onclick="renderAdminLogin()"
+                    class="w-full py-2.5 bg-slate-800 text-white rounded-xl text-xs font-bold hover:bg-slate-900">
+              <i class="fa-solid fa-shield-halved mr-1"></i>
+              Admin Login
+            </button>
+
+            <div class="text-center text-xs text-slate-500">
+              অ্যাকাউন্ট নেই?
+              <button onclick="navigateTo('register')"
+                      class="text-brand-700 font-bold hover:underline">
+                নিবন্ধন করুন
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderAdminLogin() {
+      const container = document.getElementById('page-content');
+
+      container.innerHTML = `
+        <div class="max-w-md mx-auto bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-5 animate-fade-in">
+
+          <div class="text-center space-y-2">
+            <div class="w-14 h-14 bg-slate-900 text-white rounded-full flex items-center justify-center mx-auto">
+              <i class="fa-solid fa-shield-halved text-xl"></i>
+            </div>
+
+            <h2 class="text-xl font-bold text-slate-800">
+              Admin Login
+            </h2>
+
+            <p class="text-xs text-slate-500">
+              শুধুমাত্র প্রশাসকের জন্য
+            </p>
+          </div>
+
+          <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">
+                Admin Password
+              </label>
+
+              <input type="password"
+                     id="admin-password"
+                     required
+                     autocomplete="current-password"
+                     placeholder="Admin password"
+                     class="w-full text-xs p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700" />
+            </div>
+
+            <button type="submit"
+                    class="w-full py-3 bg-slate-900 text-white font-bold rounded-xl text-xs hover:bg-slate-800">
+              Admin Panel-এ প্রবেশ করুন
+            </button>
+          </form>
+
+          <button onclick="navigateTo('login')"
+                  class="w-full text-xs text-slate-500 hover:text-brand-700">
+            ← Member Login
+          </button>
+        </div>
+      `;
+    }
+
+    /* =========================================================
+       REGISTER
+       ========================================================= */
+
+    function renderRegisterPage() {
+      return `
+        <div class="max-w-md mx-auto bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-5 animate-fade-in">
+
+          <div class="text-center space-y-1">
+
+            <h2 class="text-xl font-bold text-slate-800">
+              নতুন সদস্য নিবন্ধন
+            </h2>
+
+            <p class="text-xs text-slate-500">
+              তথ্য প্রদান করলেই account তৈরি হবে এবং আপনি automatically login হবেন।
+            </p>
+          </div>
+
+          <form onsubmit="handleRegisterSubmit(event)" class="space-y-3">
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">
+                পূর্ণ নাম <span class="text-red-500">*</span>
+              </label>
+
+              <input type="text"
+                     id="reg-name"
+                     required
+                     minlength="2"
+                     maxlength="100"
+                     placeholder="আপনার নাম"
+                     class="w-full text-xs p-2.5 border rounded-xl" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">
+                মোবাইল নম্বর <span class="text-red-500">*</span>
+              </label>
+
+              <input type="text"
+                     id="reg-mobile"
+                     required
+                     inputmode="numeric"
+                     maxlength="14"
+                     placeholder="017xxxxxxxx"
+                     class="w-full text-xs p-2.5 border rounded-xl" />
+
+              <p class="text-[10px] text-slate-400 mt-1">
+                ১১ সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন।
+              </p>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">
+                ইমেইল (ঐচ্ছিক)
+              </label>
+
+              <input type="email"
+                     id="reg-email"
+                     maxlength="120"
+                     placeholder="example@mail.com"
+                     class="w-full text-xs p-2.5 border rounded-xl" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">
+                ঠিকানা
+              </label>
+
+              <input type="text"
+                     id="reg-address"
+                     maxlength="200"
+                     placeholder="গ্রাম, ডাকঘর"
+                     class="w-full text-xs p-2.5 border rounded-xl" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">
+                পাসওয়ার্ড <span class="text-red-500">*</span>
+              </label>
+
+              <input type="password"
+                     id="reg-password"
+                     required
+                     minlength="6"
+                     maxlength="100"
+                     autocomplete="new-password"
+                     placeholder="কমপক্ষে ৬ অক্ষর"
+                     class="w-full text-xs p-2.5 border rounded-xl" />
+            </div>
+
+            <button type="submit"
+                    class="w-full py-3 bg-brand-700 text-white font-bold rounded-xl text-xs hover:bg-brand-800 transition">
+              নিবন্ধন করুন ও লগইন করুন
+            </button>
+
+          </form>
+        </div>
+      `;
+    }
+
+    /* =========================================================
+       DASHBOARD
+       ========================================================= */
+
+    function renderDashboardPage() {
+      const user = currentUser();
+
+      if (!user) {
+        return `
+          <div class="bg-white rounded-2xl p-8 text-center">
+            <p class="text-sm text-slate-500">
+              Dashboard দেখতে login করুন।
+            </p>
+          </div>
+        `;
+      }
+
+      const myContributions = window.APP_STATE.contributions.filter(
+        c => c.userId === user.id
+      );
+
+      return `
+        <div class="max-w-3xl mx-auto space-y-5 animate-fade-in">
+
+          <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+
+            <p class="text-xs text-slate-500">
+              স্বাগতম
+            </p>
+
+            <h2 class="text-2xl font-bold text-slate-800 mt-1">
+              ${escapeHTML(user.name)}
+            </h2>
+
+            <div class="grid grid-cols-2 gap-3 mt-5">
+
+              <div class="bg-brand-50 p-4 rounded-xl">
+                <p class="text-xs text-slate-500">
+                  Account Status
+                </p>
+
+                <p class="font-bold text-brand-700">
+                  Active
+                </p>
+              </div>
+
+              <div class="bg-slate-50 p-4 rounded-xl">
+                <p class="text-xs text-slate-500">
+                  সহযোগিতা
+                </p>
+
+                <p class="font-bold text-slate-800">
+                  ${myContributions.length} টি
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+
+            <h3 class="font-bold text-slate-800 mb-4">
+              আমার প্রোফাইল
+            </h3>
+
+            <div class="space-y-2 text-xs">
+
+              <p>
+                <strong>নাম:</strong>
+                ${escapeHTML(user.name)}
+              </p>
+
+              <p>
+                <strong>মোবাইল:</strong>
+                ${escapeHTML(user.mobile)}
+              </p>
+
+              <p>
+                <strong>ইমেইল:</strong>
+                ${escapeHTML(user.email || 'দেওয়া হয়নি')}
+              </p>
+
+              <p>
+                <strong>ঠিকানা:</strong>
+                ${escapeHTML(user.address || 'দেওয়া হয়নি')}
+              </p>
+
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* =========================================================
+       MEMBERS
+       ========================================================= */
+
+    function renderPublicMembersPage() {
+      const members = window.APP_STATE.users.filter(
+        u => u.status === 'Active'
+      );
+
+      return `
+        <div class="space-y-4 animate-fade-in">
+
+          <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex justify-between items-center gap-3">
+
+            <h2 class="text-lg font-bold text-slate-800">
+              সংগঠনের সম্মানীত সদস্যবৃন্দ
+            </h2>
+
+            <span class="text-xs text-slate-500">
+              মোট: ${members.length} জন
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+
+            ${
+              members.length === 0
+              ?
+              `
+                <div class="sm:col-span-2 md:col-span-3 bg-white p-8 rounded-2xl text-center text-xs text-slate-400">
+                  এখনো কোনো সদস্য নিবন্ধন করেননি।
+                </div>
+              `
+              :
+              members.map(m => `
+                <div class="bg-white p-4 rounded-xl border border-slate-100 flex items-center space-x-3">
+
+                  <div class="w-10 h-10 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold">
+                    ${escapeHTML((m.name || 'স').charAt(0))}
+                  </div>
+
+                  <div class="min-w-0">
+                    <h4 class="font-bold text-slate-800 text-xs truncate">
+                      ${escapeHTML(m.name)}
+                    </h4>
+
+                    <p class="text-[10px] text-slate-400">
+                      সদস্য
+                    </p>
+                  </div>
+                </div>
+              `).join('')
+            }
+
+          </div>
+        </div>
+      `;
+    }
+
+    /* =========================================================
+       AUTH HEADER
+       ========================================================= */
+
+    function renderAuthHeader() {
+      const container = document.getElementById('auth-header-container');
+
+      if (!container) return;
+
+      const user = currentUser();
+
+      if (isAdmin()) {
+
+        container.innerHTML = `
+          <div class="flex items-center space-x-1">
+
+            <button onclick="navigateTo('admin')"
+                    class="px-2.5 py-1 bg-amber-500 text-slate-900 font-bold rounded-lg text-xs hover:bg-amber-600">
+              এডমিন
+            </button>
+
+            <button onclick="handleLogout()"
+                    class="p-2 rounded-full hover:bg-brand-600 text-brand-100 hover:text-white transition"
+                    title="লগআউট">
+              <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+
+          </div>
+        `;
+
+        return;
+      }
+
+      if (user) {
+
+        container.innerHTML = `
+          <div class="flex items-center space-x-1">
+
+            <button onclick="navigateTo('dashboard')"
+                    class="hidden sm:block max-w-28 truncate px-2.5 py-1 bg-white/10 text-white rounded-lg text-xs font-semibold">
+              ${escapeHTML(user.name)}
+            </button>
+
+            <button onclick="handleLogout()"
+                    class="p-2 rounded-full hover:bg-brand-600 text-brand-100 hover:text-white transition"
+                    title="লগআউট">
+              <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+
+          </div>
+        `;
+
+        return;
+      }
+
+      container.innerHTML = `
+        <button onclick="navigateTo('login')"
+                class="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg text-xs font-semibold border border-white/20 transition">
+          লগইন
+        </button>
+      `;
+    }
+
+    /* =========================================================
+       AUTH ACTIONS
+       ========================================================= */
+
+    window.handleRegisterSubmit = async function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('reg-name').value.trim();
+      const mobile = normalizeMobile(document.getElementById('reg-mobile').value);
+      const email = document.getElementById('reg-email').value.trim().toLowerCase();
+      const address = document.getElementById('reg-address').value.trim();
+      const password = document.getElementById('reg-password').value;
+
+      if (name.length < 2) {
+        showToast('সঠিক পূর্ণ নাম দিন।', 'error');
+        return;
+      }
+
+      if (!isValidBangladeshMobile(mobile)) {
+        showToast('সঠিক ১১ সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন।', 'error');
+        return;
+      }
+
+      if (password.length < 6) {
+        showToast('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।', 'error');
+        return;
+      }
+
+      if (
+        email &&
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+      ) {
+        showToast('সঠিক ইমেইল দিন।', 'error');
+        return;
+      }
+
+      const duplicateMobile = window.APP_STATE.users.some(
+        u => normalizeMobile(u.mobile) === mobile
+      );
+
+      if (duplicateMobile) {
+        showToast('এই মোবাইল নম্বর দিয়ে ইতোমধ্যে account আছে।', 'error');
+        return;
+      }
+
+      if (
+        email &&
+        window.APP_STATE.users.some(
+          u => (u.email || '').toLowerCase() === email
+        )
+      ) {
+        showToast('এই ইমেইল দিয়ে ইতোমধ্যে account আছে।', 'error');
+        return;
+      }
+
+      const passwordHash = await sha256(password);
+
+      const user = {
+        id: generateId('user'),
+        name,
+        mobile,
+        email,
+        address,
+        passwordHash,
+        status: 'Active',
+        role: 'Member',
+        createdAt: new Date().toISOString()
+      };
+
+      window.APP_STATE.users.push(user);
+
+      window.APP_STATE.session = {
+        userId: user.id,
+        role: 'Member',
+        loginAt: new Date().toISOString()
+      };
+
+      saveState();
+
+      renderAuthHeader();
+
+      showToast(
+        'নিবন্ধন সফল হয়েছে। আপনার account তৈরি হয়েছে এবং আপনি লগইন করেছেন।',
+        'success'
+      );
+
+      navigateTo('dashboard');
+    };
+
+    window.handleLoginSubmit = async function(e) {
+      e.preventDefault();
+
+      const id = document.getElementById('login-id').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      const mobile = normalizeMobile(id);
+      const email = id.toLowerCase();
+
+      const user = window.APP_STATE.users.find(u =>
+        normalizeMobile(u.mobile) === mobile ||
+        (u.email && u.email.toLowerCase() === email)
+      );
+
+      if (!user) {
+        showToast('এই তথ্য দিয়ে কোনো account পাওয়া যায়নি।', 'error');
+        return;
+      }
+
+      if (user.status !== 'Active') {
+        showToast('এই account বর্তমানে active নয়।', 'error');
+        return;
+      }
+
+      const hash = await sha256(password);
+
+      if (hash !== user.passwordHash) {
+        showToast('ভুল পাসওয়ার্ড।', 'error');
+        return;
+      }
+
+      window.APP_STATE.session = {
+        userId: user.id,
+        role: 'Member',
+        loginAt: new Date().toISOString()
+      };
+
+      saveState();
+
+      renderAuthHeader();
+
+      showToast('সফলভাবে লগইন হয়েছে।', 'success');
+
+      navigateTo('dashboard');
+    };
+
+    window.handleAdminLogin = async function(e) {
+      e.preventDefault();
+
+      const password = document.getElementById('admin-password').value;
+
+      if (!password) {
+        showToast('Admin password দিন।', 'error');
+        return;
+      }
+
+      const hash = await sha256(password);
+
+      if (hash !== window.APP_STATE.admin.passwordHash) {
+        showToast('ভুল Admin password।', 'error');
+        return;
+      }
+
+      /*
+        Admin does not become a normal member.
+        Session only stores admin role.
+      */
+      window.APP_STATE.session = {
+        userId: '__ADMIN__',
+        role: 'Admin',
+        loginAt: new Date().toISOString()
+      };
+
+      saveState();
+
+      renderAuthHeader();
+
+      showToast('Admin হিসেবে সফলভাবে login হয়েছে।', 'success');
+
+      navigateTo('admin', { tab: 'overview' });
+    };
+
+    window.handleLogout = function() {
+      window.APP_STATE.session = null;
+
+      saveState();
+
+      renderAuthHeader();
+
+      showToast('লগআউট সম্পন্ন হয়েছে।', 'info');
+
+      navigateTo('home');
+    };
+
+    /* =========================================================
+       CONTRIBUTIONS
+       ========================================================= */
+
+    window.setQuickAmount = function(amount) {
+      const el = document.getElementById('contrib-amount');
+
+      if (el) {
+        el.value = amount;
+      }
+    };
+
+    window.copyBkashNumber = async function() {
+      const num = window.APP_STATE.settings.bkashNumber;
+
+      if (!num) {
+        showToast('বিকাশ নম্বর এখনো দেওয়া হয়নি।', 'error');
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(num);
+        showToast('বিকাশ নম্বর কপি করা হয়েছে!', 'success');
+      } catch {
+        const el = document.createElement('textarea');
+        el.value = num;
+
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        el.remove();
+
+        showToast('বিকাশ নম্বর কপি করা হয়েছে!', 'success');
+      }
+    };
+
+    window.handleContributionSubmit = function(e) {
+      e.preventDefault();
+
+      const user = currentUser();
+
+      if (!user) {
+        showToast('সহযোগিতা জমা দিতে আগে লগইন করুন।', 'error');
+        navigateTo('login');
+        return;
+      }
+
+      const amount = Number(
+        document.getElementById('contrib-amount').value
+      );
+
+      const sender = normalizeMobile(
+        document.getElementById('contrib-sender-bkash').value
+      );
+
+      const txnId = document.getElementById('contrib-txnid').value
+        .trim()
+        .toUpperCase();
+
+      const note = document.getElementById('contrib-note').value.trim();
+
+      if (!Number.isFinite(amount) || amount < 10) {
+        showToast('কমপক্ষে ১০ টাকা সহযোগিতা দিন।', 'error');
+        return;
+      }
+
+      if (sender && !isValidBangladeshMobile(sender)) {
+        showToast('বিকাশ নম্বরটি সঠিক নয়।', 'error');
+        return;
+      }
+
+      if (txnId.length < 4) {
+        showToast('সঠিক Transaction ID দিন।', 'error');
+        return;
+      }
+
+      const duplicateTxn = window.APP_STATE.contributions.some(
+        c => String(c.txnId).toUpperCase() === txnId
+      );
+
+      if (duplicateTxn) {
+        showToast('এই Transaction ID ইতোমধ্যে জমা দেওয়া হয়েছে।', 'error');
+        return;
+      }
+
+      const newContrib = {
+        id: generateId('contrib'),
+        userId: user.id,
+        memberName: user.name,
+        mobile: sender || user.mobile,
+        amount,
+        txnId,
+        date: todayBangla(),
+        status: 'pending',
+        note
+      };
+
+      window.APP_STATE.contributions.unshift(newContrib);
+
+      window.APP_STATE.notifications.unshift({
+        id: generateId('notif'),
+        title: 'নতুন সহযোগিতা জমা হয়েছে',
+        message: `${amount} টাকা সহযোগিতার TrxID ${txnId} verification-এর অপেক্ষায় আছে।`,
+        date: 'এখনই'
+      });
+
+      saveState();
+      updateNotificationBadges();
+
+      showToast(
+        'আপনার সহযোগিতার তথ্য সফলভাবে জমা হয়েছে!',
+        'success'
+      );
+
+      navigateTo('transparency');
+    };
+
+    window.verifyContribution = function(id, newStatus) {
+      if (!isAdmin()) {
+        showToast('Admin permission প্রয়োজন।', 'error');
+        return;
+      }
+
+      const item = window.APP_STATE.contributions.find(
+        c => c.id === id
+      );
+
+      if (!item) {
+        showToast('রেকর্ড পাওয়া যায়নি।', 'error');
+        return;
+      }
+
+      item.status = newStatus;
+
+      saveState();
+
+      showToast(
+        newStatus === 'verified'
+          ? 'সহযোগিতাটি অনুমোদিত হয়েছে।'
+          : 'সহযোগিতাটি বাতিল করা হয়েছে।',
+        'success'
+      );
+
+      navigateTo('admin', { tab: 'contributions' });
+    };
+
+    /* =========================================================
+       POSTS
+       ========================================================= */
+
+    window.openNewPostModal = function() {
+      const user = currentUser();
+
+      if (!user) {
+        showToast('মতামত লিখতে আগে লগইন করুন।', 'error');
+        navigateTo('login');
+        return;
+      }
+
+      const title = prompt('মতামতের শিরোনাম লিখুন:');
+
+      if (!title || title.trim().length < 2) return;
+
+      const content = prompt('আপনার বিস্তারিত মতামত লিখুন:');
+
+      if (!content || content.trim().length < 2) return;
+
+      window.APP_STATE.posts.unshift({
+        id: generateId('post'),
+        userId: user.id,
+        author: user.name,
+        authorRole: 'সদস্য',
+        title: title.trim(),
+        content: content.trim(),
+        likes: 0,
+        status: 'approved',
+        date: todayBangla(),
+        comments: []
+      });
+
+      saveState();
+
+      showToast('আপনার মতামত প্রকাশিত হয়েছে!', 'success');
+
+      refreshCurrentPage();
+    };
+
+    window.likePost = function(postId) {
+      const p = window.APP_STATE.posts.find(
+        post => post.id === postId
+      );
+
+      if (!p) return;
+
+      p.likes = Number(p.likes || 0) + 1;
+
+      saveState();
+
+      refreshCurrentPage();
+    };
+
+    window.submitComment = function(postId) {
+      const user = currentUser();
+
+      if (!user) {
+        showToast('মন্তব্য করতে আগে লগইন করুন।', 'error');
+        navigateTo('login');
+        return;
+      }
+
+      const input = document.getElementById(
+        `comment-input-${postId}`
+      );
+
+      if (!input || !input.value.trim()) {
+        showToast('মন্তব্য লিখুন।', 'error');
+        return;
+      }
+
+      const p = window.APP_STATE.posts.find(
+        post => post.id === postId
+      );
+
+      if (!p) return;
+
+      if (!p.comments) {
+        p.comments = [];
+      }
+
+      p.comments.push({
+        id: generateId('comment'),
+        author: user.name,
+        text: input.value.trim(),
+        date: todayBangla()
+      });
+
+      saveState();
+
+      refreshCurrentPage();
+    };
+
+    /* =========================================================
+       ADMIN PANEL
+       ========================================================= */
+
+    function adminField(id, label, value, area = false) {
+
+      const safeValue = escapeHTML(value || '');
+
+      if (area) {
+        return `
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">
+              ${escapeHTML(label)}
+            </label>
+
+            <textarea id="${id}"
+                      rows="3"
+                      class="w-full text-xs p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500">${safeValue}</textarea>
+          </div>
+        `;
+      }
+
+      return `
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">
+            ${escapeHTML(label)}
+          </label>
+
+          <input id="${id}"
+                 value="${safeValue}"
+                 class="w-full text-xs p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" />
+        </div>
+      `;
+    }
+
+    function renderAdminPanel(activeTab) {
+
+      if (!isAdmin()) {
+        return `
+          <div class="bg-white p-8 rounded-2xl text-center">
+            <i class="fa-solid fa-lock text-3xl text-red-500"></i>
+            <p class="mt-3 text-sm text-slate-600">
+              Admin access required.
+            </p>
+          </div>
+        `;
+      }
+
+      const stats = calculateStats();
+
+      const pendingContribs =
+        window.APP_STATE.contributions.filter(
+          c => c.status === 'pending'
+        );
+
+      const settings = window.APP_STATE.settings;
+
+      const tabs = [
+        ['overview', 'ওভারভিউ'],
+        ['members', 'সদস্য'],
+        ['content', 'লেখা সম্পাদনা'],
+        ['projects', 'প্রকল্প/ছবি'],
+        ['media', 'মিডিয়া'],
+        ['notices', 'গুরুত্বপূর্ণ নোটিশ'],
+        ['design', 'রং ও লোগো'],
+        ['contributions', 'সহযোগিতা'],
+        ['settings', 'সেটিংস']
+      ];
+
+      const tabButtons = tabs.map(([key, label]) => `
+        <button onclick="navigateTo('admin',{tab:'${key}'})"
+                class="px-3 py-2 rounded-lg text-xs font-bold ${
+                  activeTab === key
+                  ? 'bg-brand-700 text-white'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                }">
+          ${label}
+        </button>
+      `).join('');
+
+      let body = '';
+
+      /* OVERVIEW */
+      if (activeTab === 'overview') {
+
+        body = `
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+            <div class="bg-white p-4 rounded-xl border">
+              <p class="text-xs text-slate-500">
+                অপেক্ষমাণ সহযোগিতা
+              </p>
+
+              <p class="text-xl font-bold text-amber-600">
+                ${pendingContribs.length}
+              </p>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl border">
+              <p class="text-xs text-slate-500">
+                মোট সদস্য
+              </p>
+
+              <p class="text-xl font-bold">
+                ${window.APP_STATE.users.length}
+              </p>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl border">
+              <p class="text-xs text-slate-500">
+                যাচাইকৃত ফান্ড
+              </p>
+
+              <p class="text-xl font-bold text-emerald-700">
+                ৳ ${stats.totalVerifiedSum.toLocaleString('bn-BD')}
+              </p>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl border">
+              <p class="text-xs text-slate-500">
+                প্রকল্প
+              </p>
+
+              <p class="text-xl font-bold">
+                ${window.APP_STATE.projects.length}
+              </p>
+            </div>
+
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border space-y-3">
+
+            <h3 class="font-bold">
+              এডমিন দ্রুত কাজ
+            </h3>
+
+            <p class="text-xs text-slate-500">
+              এই প্যানেল থেকে ওয়েবসাইটের লেখা, ছবি, লোগো,
+              রং, নোটিশ, প্রকল্প ও সদস্য পরিচালনা করুন।
+            </p>
+
+            <div class="flex flex-wrap gap-2">
+
+              <button onclick="navigateTo('admin',{tab:'notices'})"
+                      class="px-4 py-2 bg-brand-700 text-white rounded-lg text-xs font-bold">
+                নতুন নোটিশ
+              </button>
+
+              <button onclick="navigateTo('admin',{tab:'projects'})"
+                      class="px-4 py-2 bg-sky-600 text-white rounded-lg text-xs font-bold">
+                নতুন প্রকল্প
+              </button>
+
+            </div>
+          </div>
+        `;
+      }
+
+      /* MEMBERS */
+      if (activeTab === 'members') {
+
+        body = `
+          <div class="bg-white p-5 rounded-2xl border space-y-3">
+
+            <h3 class="font-bold">
+              সদস্য ব্যবস্থাপনা
+            </h3>
+
+            ${
+              window.APP_STATE.users.length
+              ?
+              window.APP_STATE.users.map((m, i) => `
+                <div class="flex flex-wrap justify-between gap-2 items-center p-3 rounded-xl bg-slate-50 border">
+
+                  <div>
+                    <b class="text-sm">
+                      ${escapeHTML(m.name)}
+                    </b>
+
+                    <p class="text-xs text-slate-500">
+                      ${escapeHTML(m.mobile)}
+                      ${m.email ? ' · ' + escapeHTML(m.email) : ''}
+                      · ${escapeHTML(m.status)}
+                    </p>
+                  </div>
+
+                  <button onclick="removeMember(${i})"
+                          class="px-3 py-1.5 bg-red-600 text-white rounded-lg text-xs font-bold">
+                    সদস্য সরান
+                  </button>
+
+                </div>
+              `).join('')
+              :
+              `
+                <p class="text-xs text-slate-500">
+                  এখনো কোনো সদস্য নেই।
+                </p>
+              `
+            }
+
+          </div>
+        `;
+      }
+
+      /* CONTENT */
+      if (activeTab === 'content') {
+
+        body = `
+          <form onsubmit="saveAdminContent(event)"
+                class="bg-white p-5 rounded-2xl border space-y-4">
+
+            <h3 class="font-bold">
+              ওয়েবসাইটের গুরুত্বপূর্ণ লেখা
+            </h3>
+
+            ${adminField('content-org', 'সংগঠনের নাম', settings.orgName)}
+
+            ${adminField('content-tag', 'ট্যাগলাইন', settings.tagline)}
+
+            ${adminField('content-about', 'সংগঠন সম্পর্কে', settings.about, true)}
+
+            ${adminField('content-footer', 'ফুটার লেখা', settings.footerText, true)}
+
+            ${adminField('content-contact', 'যোগাযোগ নম্বর', settings.contactNumber)}
+
+            ${adminField('content-email', 'ইমেইল', settings.email)}
+
+            ${adminField('content-address', 'ঠিকানা', settings.address, true)}
+
+            ${adminField('content-facebook', 'Facebook URL', settings.facebookUrl)}
+
+            <button class="px-5 py-2.5 bg-brand-700 text-white rounded-xl text-xs font-bold">
+              সব লেখা সেভ করুন
+            </button>
+
+          </form>
+        `;
+      }
+
+      /* PROJECTS */
+      if (activeTab === 'projects') {
+
+        body = `
+          <div class="bg-white p-5 rounded-2xl border space-y-4">
+
+            <h3 class="font-bold">
+              প্রকল্প যোগ ও সম্পাদনা
+            </h3>
+
+            <form onsubmit="addAdminProject(event)"
+                  class="grid md:grid-cols-2 gap-3">
+
+              ${adminField('proj-title', 'প্রকল্পের নাম', '')}
+
+              ${adminField('proj-budget', 'বাজেট', '')}
+
+              ${adminField('proj-desc', 'বর্ণনা', '', true)}
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">
+                  অবস্থা
+                </label>
+
+                <select id="proj-status"
+                        class="w-full text-xs p-3 border rounded-xl">
+                  <option value="ongoing">চলমান</option>
+                  <option value="completed">সম্পন্ন</option>
+                  <option value="planned">পরিকল্পনাধীন</option>
+                </select>
+              </div>
+
+              ${adminField('proj-image', 'ছবির URL', '')}
+
+              <button class="md:col-span-2 px-4 py-2 bg-brand-700 text-white rounded-lg text-xs font-bold">
+                নতুন প্রকল্প যোগ করুন
+              </button>
+
+            </form>
+
+            <hr/>
+
+            ${
+              window.APP_STATE.projects.length === 0
+              ?
+              `
+                <p class="text-xs text-slate-500">
+                  কোনো প্রকল্প নেই।
+                </p>
+              `
+              :
+              window.APP_STATE.projects.map((p, i) => `
+                <div class="p-3 rounded-xl border flex flex-wrap gap-3 items-center">
+
+                  <img src="${escapeHTML(p.imageUrl || 'https://placehold.co/100x100')}"
+                       class="w-16 h-16 rounded-lg object-cover"
+                       onerror="this.src='https://placehold.co/100x100'"/>
+
+                  <div class="flex-1 min-w-0">
+                    <b class="text-sm">
+                      ${escapeHTML(p.title)}
+                    </b>
+
+                    <p class="text-xs text-slate-500">
+                      ${escapeHTML(p.description || '')}
+                    </p>
+                  </div>
+
+                  <button onclick="deleteAdminProject(${i})"
+                          class="px-3 py-1.5 bg-red-600 text-white rounded-lg text-xs">
+                    মুছুন
+                  </button>
+
+                </div>
+              `).join('')
+            }
+
+          </div>
+        `;
+      }
+
+      /* MEDIA */
+      if (activeTab === 'media') {
+
+        body = `
+          <div class="bg-white p-5 rounded-2xl border space-y-4">
+
+            <h3 class="font-bold">
+              মিডিয়া লাইব্রেরি
+            </h3>
+
+            <p class="text-xs text-slate-500">
+              ছবি এই browser-এর local storage-এ সংরক্ষিত হবে।
+            </p>
+
+            <input type="file"
+                   id="media-file"
+                   accept="image/*"
+                   class="w-full text-xs"
+                   onchange="previewMedia(event)" />
+
+            <img id="media-preview"
+                 class="hidden max-h-48 rounded-xl object-contain"/>
+
+            <input id="media-name"
+                   placeholder="ছবির নাম"
+                   class="w-full text-xs p-3 border rounded-xl"/>
+
+            <button onclick="saveMediaImage()"
+                    class="px-4 py-2 bg-brand-700 text-white rounded-lg text-xs font-bold">
+              ছবি সংরক্ষণ করুন
+            </button>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+              ${(settings.media || []).map((m, i) => `
+                <div class="border rounded-xl p-2">
+
+                  <img src="${escapeHTML(m.url)}"
+                       class="h-24 w-full object-cover rounded-lg"/>
+
+                  <p class="text-xs mt-1">
+                    ${escapeHTML(m.name || 'ছবি')}
+                  </p>
+
+                  <button onclick="deleteMediaImage(${i})"
+                          class="text-xs text-red-600 font-bold">
+                    মুছুন
+                  </button>
+                </div>
+              `).join('')}
+
+            </div>
+          </div>
+        `;
+      }
+
+      /* NOTICES */
+      if (activeTab === 'notices') {
+
+        body = `
+          <div class="bg-white p-5 rounded-2xl border space-y-4">
+
+            <h3 class="font-bold">
+              গুরুত্বপূর্ণ নোটিশ প্রকাশ
+            </h3>
+
+            <form onsubmit="publishAdminNotice(event)"
+                  class="space-y-3">
+
+              ${adminField('notice-title', 'নোটিশের শিরোনাম', '')}
+
+              ${adminField('notice-content', 'নোটিশের বিস্তারিত', '', true)}
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">
+                  গুরুত্ব
+                </label>
+
+                <select id="notice-priority"
+                        class="w-full text-xs p-3 border rounded-xl">
+                  <option value="Important">জরুরী</option>
+                  <option value="Normal">সাধারণ</option>
+                </select>
+              </div>
+
+              <button class="px-4 py-2 bg-brand-700 text-white rounded-lg text-xs font-bold">
+                নোটিশ প্রকাশ করুন
+              </button>
+            </form>
+
+            <hr/>
+
+            ${
+              window.APP_STATE.announcements.map((a, i) => `
+                <div class="p-3 border rounded-xl">
+
+                  <b class="text-sm">
+                    ${escapeHTML(a.title)}
+                  </b>
+
+                  <p class="text-xs text-slate-500">
+                    ${escapeHTML(a.content || '')}
+                  </p>
+
+                  <button onclick="deleteAdminNotice(${i})"
+                          class="text-xs text-red-600 font-bold mt-2">
+                    নোটিশ সরান
+                  </button>
+                </div>
+              `).join('')
+            }
+
+          </div>
+        `;
+      }
+
+      /* DESIGN */
+      if (activeTab === 'design') {
+
+        body = `
+          <form onsubmit="saveAdminDesign(event)"
+                class="bg-white p-5 rounded-2xl border space-y-4">
+
+            <h3 class="font-bold">
+              ওয়েবসাইটের রং ও লোগো
+            </h3>
+
+            ${adminField('design-primary', 'Primary Color', settings.primaryColor)}
+
+            ${adminField('design-accent', 'Accent Color', settings.accentColor)}
+
+            ${adminField('design-text', 'Text Color', settings.textColor)}
+
+            ${adminField('design-bg', 'Background Color', settings.backgroundColor)}
+
+            <div>
+
+              <label class="text-xs font-semibold">
+                লোগো আপলোড
+              </label>
+
+              <input id="logo-file"
+                     type="file"
+                     accept="image/*"
+                     class="w-full text-xs"
+                     onchange="previewLogo(event)"/>
+
+              <img id="logo-preview"
+                   src="${escapeHTML(settings.logoUrl || '')}"
+                   class="mt-2 h-24 object-contain rounded-xl ${
+                     settings.logoUrl ? '' : 'hidden'
+                   }"/>
+
+            </div>
+
+            <button class="px-5 py-2.5 bg-brand-700 text-white rounded-xl text-xs font-bold">
+              রং ও লোগো সেভ করুন
+            </button>
+
+          </form>
+        `;
+      }
+
+      /* CONTRIBUTIONS */
+      if (activeTab === 'contributions') {
+
+        const allContributions = window.APP_STATE.contributions;
+
+        body = `
+          <div class="bg-white p-5 rounded-2xl border space-y-3">
+
+            <h3 class="font-bold">
+              সহযোগিতা যাচাই
+            </h3>
+
+            ${
+              allContributions.length
+              ?
+              allContributions.map(c => `
+                <div class="p-3 rounded-xl ${
+                  c.status === 'pending'
+                  ? 'bg-amber-50'
+                  : c.status === 'verified'
+                  ? 'bg-emerald-50'
+                  : 'bg-red-50'
+                } border flex flex-wrap justify-between gap-2">
+
+                  <div class="text-xs">
+
+                    <b>
+                      ${escapeHTML(c.memberName || 'সদস্য')}
+                    </b>
+
+                    <p>
+                      ৳${Number(c.amount || 0).toLocaleString('bn-BD')}
+                      · ${escapeHTML(c.txnId)}
+                    </p>
+
+                    <p>
+                      Status:
+                      ${escapeHTML(c.status)}
+                    </p>
+
+                  </div>
+
+                  ${
+                    c.status === 'pending'
+                    ?
+                    `
+                      <div>
+
+                        <button onclick="verifyContribution('${escapeHTML(c.id)}','verified')"
+                                class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs">
+                          অনুমোদন
+                        </button>
+
+                        <button onclick="verifyContribution('${escapeHTML(c.id)}','rejected')"
+                                class="px-3 py-1.5 bg-red-600 text-white rounded-lg text-xs">
+                          বাতিল
+                        </button>
+
+                      </div>
+                    `
+                    : ''
+                  }
+
+                </div>
+              `).join('')
+              :
+              `
+                <p class="text-xs text-slate-500">
+                  কোনো সহযোগিতা জমা হয়নি।
+                </p>
+              `
+            }
+
+          </div>
+        `;
+      }
+
+      /* SETTINGS */
+      if (activeTab === 'settings') {
+
+        body = `
+          <form onsubmit="handleSettingsSave(event)"
+                class="bg-white p-5 rounded-2xl border space-y-4">
+
+            <h3 class="font-bold">
+              বিকাশ ও সাধারণ সেটিংস
+            </h3>
+
+            ${adminField('settings-bkash', 'বিকাশ নম্বর', settings.bkashNumber)}
+
+            ${adminField('settings-bkashtype', 'বিকাশ Account Type', settings.bkashAccountType)}
+
+            ${adminField('settings-orgname', 'সংগঠনের নাম', settings.orgName)}
+
+            ${adminField('settings-tagline', 'ট্যাগলাইন', settings.tagline)}
+
+            <div>
+              <label class="flex items-center gap-2 text-xs font-semibold">
+                <input type="checkbox"
+                       id="settings-private-names"
+                       ${settings.privacyPublicNames ? 'checked' : ''}>
+                Public transparency-তে নাম গোপন রাখুন
+              </label>
+            </div>
+
+            <div class="border-t pt-4">
+
+              <h4 class="font-bold text-sm mb-3">
+                Admin Password পরিবর্তন
+              </h4>
+
+              <input type="password"
+                     id="new-admin-password"
+                     minlength="8"
+                     placeholder="নতুন Admin password (কমপক্ষে ৮ অক্ষর)"
+                     class="w-full text-xs p-3 border rounded-xl"/>
+
+              <p class="text-[10px] text-slate-400 mt-1">
+                ফাঁকা রাখলে বর্তমান password অপরিবর্তিত থাকবে।
+              </p>
+            </div>
+
+            <button class="px-5 py-2.5 bg-brand-700 text-white rounded-xl text-xs font-bold">
+              সেটিংস সেভ করুন
+            </button>
+
+          </form>
+        `;
+      }
+
+      return `
+        <div class="space-y-5 animate-fade-in">
+
+          <div class="bg-slate-900 text-white p-5 rounded-2xl flex flex-col gap-4">
+
+            <div>
+              <span class="text-[10px] bg-amber-500 text-slate-950 px-2 py-1 rounded">
+                এডমিন প্যানেল
+              </span>
+
+              <h2 class="text-xl font-bold mt-2">
+                সংগঠন পরিচালনা ও ওয়েবসাইট এডিটর
+              </h2>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+              ${tabButtons}
+            </div>
+
+          </div>
+
+          ${body}
+
+        </div>
+      `;
+    }
+
+    /* =========================================================
+       ADMIN ACTIONS
+       ========================================================= */
+
+    window.removeMember = function(index) {
+
+      if (!isAdmin()) {
+        showToast('Admin permission প্রয়োজন।', 'error');
+        return;
+      }
+
+      const user = window.APP_STATE.users[index];
+
+      if (!user) return;
+
+      if (!confirm(
+        `"${user.name}" সদস্যকে সরাতে চান?`
+      )) {
+        return;
+      }
+
+      user.status = 'Removed';
+
+      /*
+        Account permanently deleted নয়।
+        Admin চাইলে পরে backend implementation-এ
+        proper delete/disable ব্যবস্থা ব্যবহার করতে পারবে।
+      */
+
+      saveState();
+
+      refreshCurrentPage();
+
+      showToast('সদস্য account deactivated হয়েছে।', 'success');
+    };
+
+    window.saveAdminContent = function(e) {
+      e.preventDefault();
+
+      if (!isAdmin()) {
+        showToast('Admin permission প্রয়োজন।', 'error');
+        return;
+      }
+
+      const s = window.APP_STATE.settings;
+
+      s.orgName = document.getElementById('content-org').value.trim();
+      s.tagline = document.getElementById('content-tag').value.trim();
+      s.about = document.getElementById('content-about').value.trim();
+      s.footerText = document.getElementById('content-footer').value.trim();
+      s.contactNumber = document.getElementById('content-contact').value.trim();
+      s.email = document.getElementById('content-email').value.trim();
+      s.address = document.getElementById('content-address').value.trim();
+      s.facebookUrl = document.getElementById('content-facebook').value.trim();
+
+      saveState();
+      applySettings();
+
+      showToast('সব লেখা সেভ হয়েছে।', 'success');
+
+      navigateTo('home');
+    };
+
+    window.addAdminProject = function(e) {
+      e.preventDefault();
+
+      if (!isAdmin()) {
+        showToast('Admin permission প্রয়োজন।', 'error');
+        return;
+      }
+
+      const title = document.getElementById('proj-title').value.trim();
+      const budget = document.getElementById('proj-budget').value.trim();
+      const description = document.getElementById('proj-desc').value.trim();
+      const status = document.getElementById('proj-status').value;
+      const imageUrl = document.getElementById('proj-image').value.trim();
+
+      if (!title) {
+        showToast('প্রকল্পের নাম দিন।', 'error');
+        return;
+      }
+
+      window.APP_STATE.projects.unshift({
+        id: generateId('project'),
+        title,
+        description,
+        budget,
+        status,
+        imageUrl
+      });
+
+      saveState();
+
+      showToast('নতুন প্রকল্প যোগ হয়েছে।', 'success');
+
+      navigateTo('admin', {tab: 'projects'});
+    };
+
+    window.deleteAdminProject = function(i) {
+
+      if (!isAdmin()) return;
+
+      if (!confirm('প্রকল্পটি মুছবেন?')) return;
+
+      window.APP_STATE.projects.splice(i, 1);
+
+      saveState();
+
+      navigateTo('admin', {tab: 'projects'});
+
+      showToast('প্রকল্প মুছে ফেলা হয়েছে।', 'success');
+    };
+
+    window.publishAdminNotice = function(e) {
+      e.preventDefault();
+
+      if (!isAdmin()) return;
+
+      const title =
+        document.getElementById('notice-title').value.trim();
+
+      const content =
+        document.getElementById('notice-content').value.trim();
+
+      const priority =
+        document.getElementById('notice-priority').value;
+
+      if (!title || !content) {
+        showToast('নোটিশের title এবং content দিন।', 'error');
+        return;
+      }
+
+      const notice = {
+        id: generateId('notice'),
+        title,
+        content,
+        priority,
+        date: todayBangla()
+      };
+
+      window.APP_STATE.announcements.unshift(notice);
+
+      window.APP_STATE.notifications.unshift({
+        id: generateId('notification'),
+        title,
+        message: content,
+        date: 'এখনই'
+      });
+
+      saveState();
+
+      showToast('গুরুত্বপূর্ণ নোটিশ প্রকাশ হয়েছে।', 'success');
+
+      navigateTo('admin', {tab: 'notices'});
+    };
+
+    window.deleteAdminNotice = function(i) {
+
+      if (!isAdmin()) return;
+
+      if (!confirm('নোটিশটি সরাবেন?')) return;
+
+      window.APP_STATE.announcements.splice(i, 1);
+
+      saveState();
+
+      navigateTo('admin', {tab: 'notices'});
+    };
+
+    /* =========================================================
+       MEDIA
+       ========================================================= */
+
+    window.previewMedia = function(e) {
+
+      if (!isAdmin()) return;
+
+      const file = e.target.files?.[0];
+
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        showToast('শুধু image file নির্বাচন করুন।', 'error');
+        return;
+      }
+
+      if (file.size > 2 * 1024 * 1024) {
+        showToast('ছবির size সর্বোচ্চ 2MB রাখুন।', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+
+        window.__mediaPreview = reader.result;
+
+        const image =
+          document.getElementById('media-preview');
+
+        if (image) {
+          image.src = reader.result;
+          image.classList.remove('hidden');
+        }
+      };
+
+      reader.onerror = () => {
+        showToast('ছবি পড়া যায়নি।', 'error');
+      };
+
+      reader.readAsDataURL(file);
+    };
+
+    window.saveMediaImage = function() {
+
+      if (!isAdmin()) return;
+
+      if (!window.__mediaPreview) {
+        showToast('আগে ছবি নির্বাচন করুন।', 'error');
+        return;
+      }
+
+      const name =
+        document.getElementById('media-name').value.trim() ||
+        'নতুন ছবি';
+
+      window.APP_STATE.settings.media =
+        window.APP_STATE.settings.media || [];
+
+      window.APP_STATE.settings.media.unshift({
+        id: generateId('media'),
+        name,
+        url: window.__mediaPreview
+      });
+
+      window.__mediaPreview = null;
+
+      saveState();
+
+      showToast('ছবি সংরক্ষিত হয়েছে।', 'success');
+
+      navigateTo('admin', {tab: 'media'});
+    };
+
+    window.deleteMediaImage = function(i) {
+
+      if (!isAdmin()) return;
+
+      if (!confirm('ছবিটি মুছবেন?')) return;
+
+      window.APP_STATE.settings.media.splice(i, 1);
+
+      saveState();
+
+      navigateTo('admin', {tab: 'media'});
+    };
+
+    /* =========================================================
+       LOGO
+       ========================================================= */
+
+    window.previewLogo = function(e) {
+
+      if (!isAdmin()) return;
+
+      const file = e.target.files?.[0];
+
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        showToast('শুধু image file নির্বাচন করুন।', 'error');
+        return;
+      }
+
+      if (file.size > 2 * 1024 * 1024) {
+        showToast('Logo file সর্বোচ্চ 2MB রাখুন।', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+
+        window.__logoPreview = reader.result;
+
+        const image =
+          document.getElementById('logo-preview');
+
+        if (image) {
+          image.src = reader.result;
+          image.classList.remove('hidden');
+        }
+      };
+
+      reader.readAsDataURL(file);
+    };
+
+    window.saveAdminDesign = function(e) {
+      e.preventDefault();
+
+      if (!isAdmin()) return;
+
+      const s = window.APP_STATE.settings;
+
+      const primary =
+        document.getElementById('design-primary').value.trim();
+
+      const accent =
+        document.getElementById('design-accent').value.trim();
+
+      const text =
+        document.getElementById('design-text').value.trim();
+
+      const background =
+        document.getElementById('design-bg').value.trim();
+
+      const colorRegex = /^#[0-9A-Fa-f]{6}$/;
+
+      if (
+        !colorRegex.test(primary) ||
+        !colorRegex.test(accent) ||
+        !colorRegex.test(text) ||
+        !colorRegex.test(background)
+      ) {
+        showToast('Color অবশ্যই #RRGGBB format-এ দিন।', 'error');
+        return;
+      }
+
+      s.primaryColor = primary;
+      s.accentColor = accent;
+      s.textColor = text;
+      s.backgroundColor = background;
+
+      if (window.__logoPreview) {
+        s.logoUrl = window.__logoPreview;
+        window.__logoPreview = null;
+      }
+
+      saveState();
+      applySettings();
+
+      showToast('রং ও লোগো সেভ হয়েছে।', 'success');
+
+      navigateTo('home');
+    };
+
+    /* =========================================================
+       SETTINGS
+       ========================================================= */
+
+    window.handleSettingsSave = async function(e) {
+      e.preventDefault();
+
+      if (!isAdmin()) return;
+
+      const s = window.APP_STATE.settings;
+
+      s.bkashNumber =
+        normalizeMobile(
+          document.getElementById('settings-bkash').value
+        );
+
+      s.bkashAccountType =
+        document.getElementById('settings-bkashtype').value.trim();
+
+      s.orgName =
+        document.getElementById('settings-orgname').value.trim();
+
+      s.tagline =
+        document.getElementById('settings-tagline').value.trim();
+
+      s.privacyPublicNames =
+        document.getElementById('settings-private-names').checked;
+
+      const newPassword =
+        document.getElementById('new-admin-password').value;
+
+      if (newPassword) {
+
+        if (newPassword.length < 8) {
+          showToast(
+            'নতুন Admin password কমপক্ষে ৮ অক্ষরের হতে হবে।',
+            'error'
+          );
+          return;
+        }
+
+        s.adminPasswordChanged = true;
+
+        window.APP_STATE.admin.passwordHash =
+          await sha256(newPassword);
+      }
+
+      saveState();
+      applySettings();
+
+      showToast(
+        'সেটিংস সফলভাবে সংরক্ষণ করা হয়েছে।',
+        'success'
+      );
+
+      navigateTo('admin', {tab: 'settings'});
+    };
+
+    /* =========================================================
+       MODAL
+       ========================================================= */
+
+    window.toggleModal = function(modalId) {
+
+      const modal =
+        document.getElementById(modalId);
+
+      if (!modal) return;
+
+      modal.classList.toggle('hidden');
+    };
+
+    /* =========================================================
+       TOAST
+       ========================================================= */
+
+    window.showToast = function(msg, type = 'info') {
+
+      const container =
+        document.getElementById('toast-container');
+
+      if (!container) return;
+
+      const toast =
+        document.createElement('div');
+
+      const bg =
+        type === 'success'
+        ? 'bg-emerald-600'
+        : type === 'error'
+        ? 'bg-red-600'
+        : 'bg-slate-800';
+
+      const icon =
+        type === 'success'
+        ? 'fa-circle-check'
+        : type === 'error'
+        ? 'fa-circle-exclamation'
+        : 'fa-circle-info';
+
+      toast.className =
+        `p-3.5 rounded-xl shadow-xl text-white text-xs font-semibold
+         flex items-center gap-2 pointer-events-auto transition-all
+         ${bg}`;
+
+      const iconEl =
+        document.createElement('i');
+
+      iconEl.className =
+        `fa-solid ${icon}`;
+
+      const textEl =
+        document.createElement('span');
+
+      textEl.textContent = msg;
+
+      toast.appendChild(iconEl);
+      toast.appendChild(textEl);
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+      }, 3200);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 3600);
+    };
+
+    /* =========================================================
+       PUSH NOTIFICATION
+       ========================================================= */
+
+    window.requestPushPermission = function() {
+
+      if (!('Notification' in window)) {
+        showToast(
+          'আপনার browser notification support করে না।',
+          'error'
+        );
+        return;
+      }
+
+      Notification.requestPermission()
+        .then(permission => {
+
+          if (permission === 'granted') {
+
+            showToast(
+              'Browser notification permission দেওয়া হয়েছে।',
+              'success'
+            );
+
+          } else {
+
+            showToast(
+              'Notification permission পাওয়া যায়নি।',
+              'error'
+            );
+          }
+        })
+        .catch(() => {
+          showToast(
+            'Notification permission নেওয়া সম্ভব হয়নি।',
+            'error'
+          );
+        });
+    };
+
+    /* =========================================================
+       PWA
+       ========================================================= */
+
+    let deferredPrompt = null;
+
+    window.installPWA = async function() {
+
+      if (!deferredPrompt) {
+        showToast(
+          'এই browser বর্তমানে install prompt দেয়নি।',
+          'info'
+        );
+        return;
+      }
+
+      deferredPrompt.prompt();
+
+      try {
+        await deferredPrompt.userChoice;
+      } catch (e) {
+        console.warn('PWA install choice error:', e);
+      }
+
+      deferredPrompt = null;
+
+      const banner =
+        document.getElementById('pwa-install-banner');
+
+      if (banner) {
+        banner.classList.add('hidden');
+      }
+    };
+
+    window.dismissPWA = function() {
+
+      const banner =
+        document.getElementById('pwa-install-banner');
+
+      if (banner) {
+        banner.classList.add('hidden');
+      }
+    };
+
+    function checkPWA() {
+
+      window.addEventListener(
+        'beforeinstallprompt',
+        event => {
+
+          event.preventDefault();
+
+          deferredPrompt = event;
+
+          const banner =
+            document.getElementById('pwa-install-banner');
+
+          if (banner) {
+            banner.classList.remove('hidden');
+          }
+        }
+      );
+    }
+
+    /* =========================================================
+       HASH ROUTING / UNAUTHORIZED ADMIN URL
+       ========================================================= */
+
+    window.addEventListener('hashchange', () => {
+
+      const hash =
+        location.hash.replace('#', '').trim();
+
+      if (hash === 'admin') {
+
+        if (isAdmin()) {
+          navigateTo('admin', {tab: 'overview'});
+        } else {
+          navigateTo('login');
+          showToast(
+            'Admin login ছাড়া এই page access করা যাবে না।',
+            'error'
+          );
+        }
+
+        return;
+      }
+
+      if (hash === 'login') {
+        navigateTo('login');
+        return;
+      }
+
+      if (hash === 'register') {
+        navigateTo('register');
+        return;
+      }
+
+      if (hash === 'dashboard') {
+        navigateTo('dashboard');
+        return;
+      }
+
+      if (hash) {
+        navigateTo(hash);
+      }
+    });
+
+    /* =========================================================
+       INIT
+       ========================================================= */
+
+    function initApp() {
+
+      loadState();
+
+      applySettings();
+
+      renderAuthHeader();
+
+      updateNotificationBadges();
+
+      checkPWA();
+
+      /*
+        No demo/seed data is created here.
+        First launch starts completely empty.
+      */
+
+      const hash =
+        location.hash.replace('#', '').trim();
+
+      if (hash === 'admin') {
+
+        if (isAdmin()) {
+          navigateTo('admin', {tab: 'overview'});
+        } else {
+          navigateTo('login');
+        }
+
+      } else if (hash) {
+
+        navigateTo(hash);
+
+      } else {
+
+        navigateTo('home');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
+
+  </script>
+
+</body>
+</html>
