@@ -117,6 +117,7 @@
   </style>
 </head>
 
+<!-- Supabase-backed shared database. Independent utility; not an official organization app. -->
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen pb-20 md:pb-0 selection:bg-brand-500 selection:text-white">
 
   <!-- Top Navigation Header -->
@@ -403,24 +404,36 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script>
     /* =========================================================
        SERUAKANDA ASHA ALO FOUNDATION
-       Frontend Local Storage Edition
+       Supabase Shared Database Edition
        ========================================================= */
+
+    // Paste your Supabase Project URL and Publishable Key here.
+    const SUPABASE_URL = 'https://bebgrsqfouibfluxdhju.supabase.co';
+    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_CqpBa3OxIs6AwN7gtMxbXw_obdDnIPt';
+
+    const SUPABASE_CONFIGURED =
+      SUPABASE_URL.startsWith('https://') &&
+      !SUPABASE_URL.includes('PASTE_YOUR_') &&
+      !!SUPABASE_PUBLISHABLE_KEY &&
+      !SUPABASE_PUBLISHABLE_KEY.includes('PASTE_YOUR_');
+
+    const supabaseClient = SUPABASE_CONFIGURED
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+          auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true
+          }
+        })
+      : null;
 
     const STORAGE_KEY = 'seruakanda_foundation_v2';
     const SESSION_KEY = 'seruakanda_session_v2';
-
-    /*
-      IMPORTANT:
-      This is a client-side application.
-      Default admin password = imran0000
-
-      Only the SHA-256 hash is stored in the application state.
-      This is NOT equivalent to server-side authentication.
-      For production, move authentication to Firebase/Supabase/backend.
-    */
 
     const DEFAULT_ADMIN_PASSWORD_HASH =
       'aeff49790f3b72e48bb8650d30be19d9572a3370aa68181fcc23de1717fb3dad';
@@ -445,7 +458,6 @@
         footerText: 'সেরুয়াকান্দা আশা আলো ফাউন্ডেশন — সম্মিলিত উন্নয়নের প্রত্যয়ে',
         media: []
       },
-
       users: [],
       contributions: [],
       posts: [],
@@ -453,60 +465,35 @@
       projects: [],
       notifications: [],
       auditLogs: [],
-
-      admin: {
-        email: 'admin@seruakanda.local',
-        passwordHash: DEFAULT_ADMIN_PASSWORD_HASH
-      },
-
+      admin: { email: '', passwordHash: DEFAULT_ADMIN_PASSWORD_HASH },
       session: null,
       currentPage: 'home'
     };
 
     window.APP_STATE = structuredClone(DEFAULT_STATE);
 
-    /* =========================================================
-       BASIC HELPERS
-       ========================================================= */
-
-    function clone(obj) {
-      return JSON.parse(JSON.stringify(obj));
-    }
+    function clone(obj) { return JSON.parse(JSON.stringify(obj)); }
 
     function normalizeMobile(value) {
       let v = String(value || '').trim().replace(/[^\d+]/g, '');
-
-      if (v.startsWith('+880')) {
-        v = '0' + v.substring(4);
-      }
-
-      if (v.startsWith('880')) {
-        v = '0' + v.substring(3);
-      }
-
+      if (v.startsWith('+880')) v = '0' + v.substring(4);
+      if (v.startsWith('880')) v = '0' + v.substring(3);
       return v;
     }
 
     function isValidBangladeshMobile(value) {
-      const mobile = normalizeMobile(value);
-      return /^01[3-9]\d{8}$/.test(mobile);
+      return /^01[3-9]\d{8}$/.test(normalizeMobile(value));
     }
 
     function escapeHTML(value) {
       return String(value ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
     }
 
     function todayBangla() {
-      return new Date().toLocaleDateString('bn-BD', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric'
-      });
+      return new Date().toLocaleDateString('bn-BD', {day:'numeric', month:'short', year:'numeric'});
     }
 
     function generateId(prefix) {
@@ -516,125 +503,116 @@
     async function sha256(value) {
       const data = new TextEncoder().encode(value);
       const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-
-      return Array.from(new Uint8Array(hashBuffer))
-        .map(b => b.toString(16).padStart(2, '0'))
-        .join('');
+      return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join('');
     }
 
     function currentUser() {
       const id = window.APP_STATE.session?.userId;
-
       if (!id) return null;
-
       return window.APP_STATE.users.find(u => u.id === id) || null;
     }
 
-    function isLoggedIn() {
-      return !!currentUser();
-    }
+    function isLoggedIn() { return !!currentUser(); }
+    function isAdmin() { return window.APP_STATE.session?.role === 'Admin'; }
+    function isAdminOrMod() { return isAdmin(); }
 
-    function isAdmin() {
-      return window.APP_STATE.session?.role === 'Admin';
-    }
+    async function saveState() {
+      if (!SUPABASE_CONFIGURED || !supabaseClient) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(clone(window.APP_STATE)));
+          return true;
+        } catch (e) { console.error(e); return false; }
+      }
 
-    function isAdminOrMod() {
-      return isAdmin();
-    }
+      if (!isAdmin()) return true;
 
-    /* =========================================================
-       STORAGE
-       ========================================================= */
+      const payload = {
+        settings: window.APP_STATE.settings,
+        announcements: window.APP_STATE.announcements,
+        projects: window.APP_STATE.projects,
+        notifications: window.APP_STATE.notifications,
+        auditLogs: window.APP_STATE.auditLogs
+      };
 
-    function saveState() {
-      try {
-        const saveData = clone(window.APP_STATE);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(saveData));
-
-        if (window.APP_STATE.session) {
-          localStorage.setItem(
-            SESSION_KEY,
-            JSON.stringify(window.APP_STATE.session)
-          );
-        } else {
-          localStorage.removeItem(SESSION_KEY);
-        }
-
-        return true;
-      } catch (error) {
-        console.error('Storage save error:', error);
-        showToast('ডাটা সংরক্ষণ করা সম্ভব হয়নি। Browser storage পরীক্ষা করুন।', 'error');
+      const { error } = await supabaseClient.rpc('save_foundation_state', { p_state: payload });
+      if (error) {
+        console.error('Supabase save error:', error);
+        showToast('ডাটা সেভ হয়নি: ' + error.message, 'error');
         return false;
       }
+      return true;
     }
 
-    function loadState() {
-      try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-
-        if (stored) {
-          const parsed = JSON.parse(stored);
-
-          window.APP_STATE = {
-            ...clone(DEFAULT_STATE),
-            ...parsed,
-            settings: {
-              ...clone(DEFAULT_STATE.settings),
-              ...(parsed.settings || {})
-            },
-            users: Array.isArray(parsed.users) ? parsed.users : [],
-            contributions: Array.isArray(parsed.contributions) ? parsed.contributions : [],
-            posts: Array.isArray(parsed.posts) ? parsed.posts : [],
-            announcements: Array.isArray(parsed.announcements) ? parsed.announcements : [],
-            projects: Array.isArray(parsed.projects) ? parsed.projects : [],
-            notifications: Array.isArray(parsed.notifications) ? parsed.notifications : [],
-            auditLogs: Array.isArray(parsed.auditLogs) ? parsed.auditLogs : [],
-            admin: {
-              ...clone(DEFAULT_STATE.admin),
-              ...(parsed.admin || {})
-            }
-          };
-        }
-
-        const storedSession = localStorage.getItem(SESSION_KEY);
-
-        if (storedSession) {
-          const session = JSON.parse(storedSession);
-
-          if (
-            session &&
-            session.userId &&
-            session.role &&
-            window.APP_STATE.users.some(u => u.id === session.userId)
-          ) {
-            window.APP_STATE.session = session;
-          } else {
-            window.APP_STATE.session = null;
-            localStorage.removeItem(SESSION_KEY);
-          }
-        }
-
-      } catch (error) {
-        console.error('Storage load error:', error);
-
-        window.APP_STATE = clone(DEFAULT_STATE);
-        localStorage.removeItem(STORAGE_KEY);
-        localStorage.removeItem(SESSION_KEY);
+    async function loadState() {
+      if (!SUPABASE_CONFIGURED || !supabaseClient) {
+        try {
+          const stored = localStorage.getItem(STORAGE_KEY);
+          if (stored) window.APP_STATE = {...clone(DEFAULT_STATE), ...JSON.parse(stored)};
+        } catch(e) { console.error(e); }
+        applySettings();
+        return;
       }
 
-      applySettings();
+      try {
+        const [{data: stateRow, error: stateError}, {data: profiles, error: profilesError}, {data: contributions, error: contribError}, {data: posts, error: postsError}, {data: sessionData}] = await Promise.all([
+          supabaseClient.from('foundation_state').select('*').eq('id',1).maybeSingle(),
+          supabaseClient.from('profiles').select('*').order('created_at',{ascending:false}),
+          supabaseClient.from('contributions').select('*').order('created_at',{ascending:false}),
+          supabaseClient.from('posts').select('*').order('created_at',{ascending:false}),
+          supabaseClient.auth.getSession()
+        ]);
+
+        if (stateError) console.error(stateError);
+        if (profilesError) console.error(profilesError);
+        if (contribError) console.error(contribError);
+        if (postsError) console.error(postsError);
+
+        const state = clone(DEFAULT_STATE);
+        if (stateRow) {
+          state.settings = {...state.settings, ...(stateRow.settings || {})};
+          state.announcements = Array.isArray(stateRow.announcements) ? stateRow.announcements : [];
+          state.projects = Array.isArray(stateRow.projects) ? stateRow.projects : [];
+          state.notifications = Array.isArray(stateRow.notifications) ? stateRow.notifications : [];
+          state.auditLogs = Array.isArray(stateRow.audit_logs) ? stateRow.audit_logs : [];
+        }
+
+        state.users = (profiles || []).map(p => ({
+          id:p.id, name:p.name, mobile:p.mobile, email:p.display_email || '', authEmail:p.auth_email || '',
+          address:p.address || '', passwordHash:'', status:p.status, role:p.role || 'Member', createdAt:p.created_at
+        }));
+
+        state.contributions = (contributions || []).map(c => ({
+          id:c.id, userId:c.user_id, memberName:c.member_name, mobile:c.mobile, amount:Number(c.amount),
+          txnId:c.txn_id, date:c.date, status:c.status, note:c.note || ''
+        }));
+
+        state.posts = (posts || []).map(p => ({
+          id:p.id, userId:p.user_id, author:p.author, authorRole:p.author_role, title:p.title, content:p.content,
+          likes:p.likes, status:p.status, date:p.date, comments:Array.isArray(p.comments)?p.comments:[]
+        }));
+
+        const session = sessionData?.session;
+        if (session?.user) {
+          let admin = false;
+          const {data: adminResult, error: adminError} = await supabaseClient.rpc('is_admin');
+          if (!adminError) admin = !!adminResult;
+          state.session = {userId: session.user.id, role: admin ? 'Admin' : 'Member', loginAt: session.user.last_sign_in_at || new Date().toISOString()};
+        } else {
+          state.session = null;
+        }
+
+        window.APP_STATE = state;
+        applySettings();
+      } catch (error) {
+        console.error('Supabase load error:', error);
+        showToast('Supabase থেকে ডাটা লোড করা যায়নি।', 'error');
+        applySettings();
+      }
     }
 
-    function resetLocalSystem() {
-      const ok = confirm(
-        'সত্যিই কি সব local data মুছে ফেলতে চান?\n\nUser, settings, notice, project, contribution—সব মুছে যাবে।'
-      );
-
-      if (!ok) return;
-
+    async function resetLocalSystem() {
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(SESSION_KEY);
-
       location.reload();
     }
 
@@ -1809,6 +1787,18 @@
 
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">
+                Admin Email
+              </label>
+              <input type="email"
+                     id="admin-email"
+                     required
+                     autocomplete="username"
+                     placeholder="admin@example.com"
+                     class="w-full text-xs p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">
                 Admin Password
               </label>
 
@@ -2156,180 +2146,99 @@
 
     window.handleRegisterSubmit = async function(e) {
       e.preventDefault();
-
       const name = document.getElementById('reg-name').value.trim();
       const mobile = normalizeMobile(document.getElementById('reg-mobile').value);
       const email = document.getElementById('reg-email').value.trim().toLowerCase();
       const address = document.getElementById('reg-address').value.trim();
       const password = document.getElementById('reg-password').value;
 
-      if (name.length < 2) {
-        showToast('সঠিক পূর্ণ নাম দিন।', 'error');
+      if (name.length < 2) return showToast('সঠিক পূর্ণ নাম দিন।','error');
+      if (!isValidBangladeshMobile(mobile)) return showToast('সঠিক ১১ সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন।','error');
+      if (password.length < 6) return showToast('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।','error');
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showToast('সঠিক ইমেইল দিন।','error');
+
+      if (!SUPABASE_CONFIGURED) {
+        showToast('আগে Supabase URL ও Publishable Key বসান।','error');
         return;
       }
 
-      if (!isValidBangladeshMobile(mobile)) {
-        showToast('সঠিক ১১ সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন।', 'error');
+      const {data: existing} = await supabaseClient.from('profiles').select('id').eq('mobile',mobile).maybeSingle();
+      if (existing) return showToast('এই মোবাইল নম্বর দিয়ে ইতোমধ্যে account আছে।','error');
+
+      const authEmail = email || (mobile.replace(/^0/,'88') + '.member@seruakanda.local');
+      const {data, error} = await supabaseClient.auth.signUp({email:authEmail, password});
+      if (error) return showToast(error.message,'error');
+
+      if (!data.user) return showToast('Account তৈরি হয়নি। আবার চেষ্টা করুন।','error');
+      if (!data.session) {
+        showToast('Account তৈরি হয়েছে। Supabase email confirmation চালু থাকলে আগে email confirm করতে হবে।','info');
         return;
       }
 
-      if (password.length < 6) {
-        showToast('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।', 'error');
-        return;
+      const {error: profileError} = await supabaseClient.from('profiles').insert({
+        id:data.user.id, name, mobile, display_email:email || null, auth_email:authEmail, address, status:'Active', role:'Member'
+      });
+      if (profileError) {
+        await supabaseClient.auth.signOut();
+        return showToast('Profile তৈরি হয়নি: '+profileError.message,'error');
       }
 
-      if (
-        email &&
-        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-      ) {
-        showToast('সঠিক ইমেইল দিন।', 'error');
-        return;
-      }
-
-      const duplicateMobile = window.APP_STATE.users.some(
-        u => normalizeMobile(u.mobile) === mobile
-      );
-
-      if (duplicateMobile) {
-        showToast('এই মোবাইল নম্বর দিয়ে ইতোমধ্যে account আছে।', 'error');
-        return;
-      }
-
-      if (
-        email &&
-        window.APP_STATE.users.some(
-          u => (u.email || '').toLowerCase() === email
-        )
-      ) {
-        showToast('এই ইমেইল দিয়ে ইতোমধ্যে account আছে।', 'error');
-        return;
-      }
-
-      const passwordHash = await sha256(password);
-
-      const user = {
-        id: generateId('user'),
-        name,
-        mobile,
-        email,
-        address,
-        passwordHash,
-        status: 'Active',
-        role: 'Member',
-        createdAt: new Date().toISOString()
-      };
-
-      window.APP_STATE.users.push(user);
-
-      window.APP_STATE.session = {
-        userId: user.id,
-        role: 'Member',
-        loginAt: new Date().toISOString()
-      };
-
-      saveState();
-
+      await loadState();
       renderAuthHeader();
-
-      showToast(
-        'নিবন্ধন সফল হয়েছে। আপনার account তৈরি হয়েছে এবং আপনি লগইন করেছেন।',
-        'success'
-      );
-
+      showToast('নিবন্ধন সফল হয়েছে। আপনি লগইন করেছেন।','success');
       navigateTo('dashboard');
     };
 
     window.handleLoginSubmit = async function(e) {
       e.preventDefault();
-
       const id = document.getElementById('login-id').value.trim();
       const password = document.getElementById('login-password').value;
+      if (!SUPABASE_CONFIGURED) return showToast('আগে Supabase URL ও Publishable Key বসান।','error');
 
+      let authEmail = id.toLowerCase();
       const mobile = normalizeMobile(id);
-      const email = id.toLowerCase();
-
-      const user = window.APP_STATE.users.find(u =>
-        normalizeMobile(u.mobile) === mobile ||
-        (u.email && u.email.toLowerCase() === email)
-      );
-
-      if (!user) {
-        showToast('এই তথ্য দিয়ে কোনো account পাওয়া যায়নি।', 'error');
-        return;
+      if (isValidBangladeshMobile(mobile)) {
+        const {data:userProfile, error} = await supabaseClient.from('profiles').select('auth_email,status').eq('mobile',mobile).maybeSingle();
+        if (error || !userProfile) return showToast('এই মোবাইল নম্বর দিয়ে কোনো account পাওয়া যায়নি।','error');
+        if (userProfile.status !== 'Active') return showToast('এই account বর্তমানে active নয়।','error');
+        authEmail = userProfile.auth_email;
       }
 
-      if (user.status !== 'Active') {
-        showToast('এই account বর্তমানে active নয়।', 'error');
-        return;
-      }
-
-      const hash = await sha256(password);
-
-      if (hash !== user.passwordHash) {
-        showToast('ভুল পাসওয়ার্ড।', 'error');
-        return;
-      }
-
-      window.APP_STATE.session = {
-        userId: user.id,
-        role: 'Member',
-        loginAt: new Date().toISOString()
-      };
-
-      saveState();
-
+      const {data, error} = await supabaseClient.auth.signInWithPassword({email:authEmail,password});
+      if (error) return showToast('লগইন হয়নি: '+error.message,'error');
+      await loadState();
       renderAuthHeader();
-
-      showToast('সফলভাবে লগইন হয়েছে।', 'success');
-
+      showToast('সফলভাবে লগইন হয়েছে।','success');
       navigateTo('dashboard');
     };
 
     window.handleAdminLogin = async function(e) {
       e.preventDefault();
-
+      const email = document.getElementById('admin-email').value.trim().toLowerCase();
       const password = document.getElementById('admin-password').value;
+      if (!email || !password) return showToast('Admin email ও password দিন।','error');
+      if (!SUPABASE_CONFIGURED) return showToast('আগে Supabase URL ও Publishable Key বসান।','error');
 
-      if (!password) {
-        showToast('Admin password দিন।', 'error');
-        return;
+      const {error} = await supabaseClient.auth.signInWithPassword({email,password});
+      if (error) return showToast('Admin login হয়নি: '+error.message,'error');
+
+      const {data:isAdminResult, error:adminError} = await supabaseClient.rpc('is_admin');
+      if (adminError || !isAdminResult) {
+        await supabaseClient.auth.signOut();
+        return showToast('এই account Admin হিসেবে অনুমোদিত নয়।','error');
       }
 
-      const hash = await sha256(password);
-
-      if (hash !== window.APP_STATE.admin.passwordHash) {
-        showToast('ভুল Admin password।', 'error');
-        return;
-      }
-
-      /*
-        Admin does not become a normal member.
-        Session only stores admin role.
-      */
-      window.APP_STATE.session = {
-        userId: '__ADMIN__',
-        role: 'Admin',
-        loginAt: new Date().toISOString()
-      };
-
-      saveState();
-
+      await loadState();
       renderAuthHeader();
-
-      showToast('Admin হিসেবে সফলভাবে login হয়েছে।', 'success');
-
-      navigateTo('admin', { tab: 'overview' });
+      showToast('Admin হিসেবে সফলভাবে login হয়েছে।','success');
+      navigateTo('admin',{tab:'overview'});
     };
 
-    window.handleLogout = function() {
+    window.handleLogout = async function() {
+      if (SUPABASE_CONFIGURED && supabaseClient) await supabaseClient.auth.signOut();
       window.APP_STATE.session = null;
-
-      saveState();
-
       renderAuthHeader();
-
-      showToast('লগআউট সম্পন্ন হয়েছে।', 'info');
-
+      showToast('লগআউট সম্পন্ন হয়েছে।','info');
       navigateTo('home');
     };
 
@@ -2369,209 +2278,71 @@
       }
     };
 
-    window.handleContributionSubmit = function(e) {
+    window.handleContributionSubmit = async function(e) {
       e.preventDefault();
-
       const user = currentUser();
-
-      if (!user) {
-        showToast('সহযোগিতা জমা দিতে আগে লগইন করুন।', 'error');
-        navigateTo('login');
-        return;
-      }
-
-      const amount = Number(
-        document.getElementById('contrib-amount').value
-      );
-
-      const sender = normalizeMobile(
-        document.getElementById('contrib-sender-bkash').value
-      );
-
-      const txnId = document.getElementById('contrib-txnid').value
-        .trim()
-        .toUpperCase();
-
+      if (!user) { showToast('সহযোগিতা জমা দিতে আগে লগইন করুন।','error'); navigateTo('login'); return; }
+      const amount = Number(document.getElementById('contrib-amount').value);
+      const sender = normalizeMobile(document.getElementById('contrib-sender-bkash').value);
+      const txnId = document.getElementById('contrib-txnid').value.trim().toUpperCase();
       const note = document.getElementById('contrib-note').value.trim();
+      if (!Number.isFinite(amount) || amount < 10) return showToast('কমপক্ষে ১০ টাকা সহযোগিতা দিন।','error');
+      if (sender && !isValidBangladeshMobile(sender)) return showToast('বিকাশ নম্বরটি সঠিক নয়।','error');
+      if (txnId.length < 4) return showToast('সঠিক Transaction ID দিন।','error');
+      if (!SUPABASE_CONFIGURED) return showToast('Supabase configuration দিন।','error');
 
-      if (!Number.isFinite(amount) || amount < 10) {
-        showToast('কমপক্ষে ১০ টাকা সহযোগিতা দিন।', 'error');
-        return;
-      }
-
-      if (sender && !isValidBangladeshMobile(sender)) {
-        showToast('বিকাশ নম্বরটি সঠিক নয়।', 'error');
-        return;
-      }
-
-      if (txnId.length < 4) {
-        showToast('সঠিক Transaction ID দিন।', 'error');
-        return;
-      }
-
-      const duplicateTxn = window.APP_STATE.contributions.some(
-        c => String(c.txnId).toUpperCase() === txnId
-      );
-
-      if (duplicateTxn) {
-        showToast('এই Transaction ID ইতোমধ্যে জমা দেওয়া হয়েছে।', 'error');
-        return;
-      }
-
-      const newContrib = {
-        id: generateId('contrib'),
-        userId: user.id,
-        memberName: user.name,
-        mobile: sender || user.mobile,
-        amount,
-        txnId,
-        date: todayBangla(),
-        status: 'pending',
-        note
-      };
-
-      window.APP_STATE.contributions.unshift(newContrib);
-
-      window.APP_STATE.notifications.unshift({
-        id: generateId('notif'),
-        title: 'নতুন সহযোগিতা জমা হয়েছে',
-        message: `${amount} টাকা সহযোগিতার TrxID ${txnId} verification-এর অপেক্ষায় আছে।`,
-        date: 'এখনই'
-      });
-
-      saveState();
+      const item = {id:generateId('contrib'), member_name:user.name, mobile:sender || user.mobile, amount, txn_id:txnId, date:todayBangla(), note};
+      const {error} = await supabaseClient.rpc('submit_contribution',{p_contribution:item});
+      if (error) return showToast('সহযোগিতা জমা হয়নি: '+error.message,'error');
+      await loadState();
       updateNotificationBadges();
-
-      showToast(
-        'আপনার সহযোগিতার তথ্য সফলভাবে জমা হয়েছে!',
-        'success'
-      );
-
+      showToast('আপনার সহযোগিতার তথ্য সফলভাবে জমা হয়েছে!','success');
       navigateTo('transparency');
     };
 
-    window.verifyContribution = function(id, newStatus) {
-      if (!isAdmin()) {
-        showToast('Admin permission প্রয়োজন।', 'error');
-        return;
-      }
-
-      const item = window.APP_STATE.contributions.find(
-        c => c.id === id
-      );
-
-      if (!item) {
-        showToast('রেকর্ড পাওয়া যায়নি।', 'error');
-        return;
-      }
-
-      item.status = newStatus;
-
-      saveState();
-
-      showToast(
-        newStatus === 'verified'
-          ? 'সহযোগিতাটি অনুমোদিত হয়েছে।'
-          : 'সহযোগিতাটি বাতিল করা হয়েছে।',
-        'success'
-      );
-
-      navigateTo('admin', { tab: 'contributions' });
+    window.verifyContribution = async function(id,newStatus) {
+      if (!isAdmin()) return showToast('Admin permission প্রয়োজন।','error');
+      const {error} = await supabaseClient.rpc('admin_verify_contribution',{p_id:id,p_status:newStatus});
+      if (error) return showToast('আপডেট হয়নি: '+error.message,'error');
+      await loadState();
+      showToast(newStatus === 'verified' ? 'সহযোগিতাটি অনুমোদিত হয়েছে।' : 'সহযোগিতাটি বাতিল করা হয়েছে।','success');
+      navigateTo('admin',{tab:'contributions'});
     };
 
     /* =========================================================
        POSTS
        ========================================================= */
 
-    window.openNewPostModal = function() {
+    window.openNewPostModal = async function() {
       const user = currentUser();
-
-      if (!user) {
-        showToast('মতামত লিখতে আগে লগইন করুন।', 'error');
-        navigateTo('login');
-        return;
-      }
-
+      if (!user) { showToast('মতামত লিখতে আগে লগইন করুন।','error'); navigateTo('login'); return; }
       const title = prompt('মতামতের শিরোনাম লিখুন:');
-
       if (!title || title.trim().length < 2) return;
-
       const content = prompt('আপনার বিস্তারিত মতামত লিখুন:');
-
       if (!content || content.trim().length < 2) return;
-
-      window.APP_STATE.posts.unshift({
-        id: generateId('post'),
-        userId: user.id,
-        author: user.name,
-        authorRole: 'সদস্য',
-        title: title.trim(),
-        content: content.trim(),
-        likes: 0,
-        status: 'approved',
-        date: todayBangla(),
-        comments: []
-      });
-
-      saveState();
-
-      showToast('আপনার মতামত প্রকাশিত হয়েছে!', 'success');
-
+      const post = {id:generateId('post'),author:user.name,author_role:'সদস্য',title:title.trim(),content:content.trim(),date:todayBangla()};
+      const {error} = await supabaseClient.rpc('submit_post',{p_post:post});
+      if (error) return showToast('মতামত প্রকাশ হয়নি: '+error.message,'error');
+      await loadState();
+      showToast('আপনার মতামত প্রকাশিত হয়েছে!','success');
       refreshCurrentPage();
     };
 
-    window.likePost = function(postId) {
-      const p = window.APP_STATE.posts.find(
-        post => post.id === postId
-      );
-
-      if (!p) return;
-
-      p.likes = Number(p.likes || 0) + 1;
-
-      saveState();
-
-      refreshCurrentPage();
+    window.likePost = async function(postId) {
+      const {error} = await supabaseClient.rpc('like_post',{p_post_id:postId});
+      if (error) return showToast('Like দেওয়া যায়নি।','error');
+      await loadState(); refreshCurrentPage();
     };
 
-    window.submitComment = function(postId) {
+    window.submitComment = async function(postId) {
       const user = currentUser();
-
-      if (!user) {
-        showToast('মন্তব্য করতে আগে লগইন করুন।', 'error');
-        navigateTo('login');
-        return;
-      }
-
-      const input = document.getElementById(
-        `comment-input-${postId}`
-      );
-
-      if (!input || !input.value.trim()) {
-        showToast('মন্তব্য লিখুন।', 'error');
-        return;
-      }
-
-      const p = window.APP_STATE.posts.find(
-        post => post.id === postId
-      );
-
-      if (!p) return;
-
-      if (!p.comments) {
-        p.comments = [];
-      }
-
-      p.comments.push({
-        id: generateId('comment'),
-        author: user.name,
-        text: input.value.trim(),
-        date: todayBangla()
-      });
-
-      saveState();
-
-      refreshCurrentPage();
+      if (!user) { showToast('মন্তব্য করতে আগে লগইন করুন।','error'); navigateTo('login'); return; }
+      const input = document.getElementById(`comment-input-${postId}`);
+      if (!input || !input.value.trim()) return showToast('মন্তব্য লিখুন।','error');
+      const comment = {id:generateId('comment'),author:user.name,text:input.value.trim(),date:todayBangla()};
+      const {error} = await supabaseClient.rpc('add_post_comment',{p_post_id:postId,p_comment:comment});
+      if (error) return showToast('মন্তব্য যোগ হয়নি: '+error.message,'error');
+      await loadState(); refreshCurrentPage();
     };
 
     /* =========================================================
@@ -3219,7 +2990,7 @@
        ADMIN ACTIONS
        ========================================================= */
 
-    window.removeMember = function(index) {
+    window.removeMember = async function(index) {
 
       if (!isAdmin()) {
         showToast('Admin permission প্রয়োজন।', 'error');
@@ -3236,18 +3007,15 @@
         return;
       }
 
-      user.status = 'Removed';
-
-      /*
-        Account permanently deleted নয়।
-        Admin চাইলে পরে backend implementation-এ
-        proper delete/disable ব্যবস্থা ব্যবহার করতে পারবে।
-      */
-
-      saveState();
-
+      if (SUPABASE_CONFIGURED) {
+        const {error} = await supabaseClient.rpc('admin_set_member_status',{p_user_id:user.id,p_status:'Removed'});
+        if (error) return showToast('সদস্য deactive হয়নি: '+error.message,'error');
+        await loadState();
+      } else {
+        user.status = 'Removed';
+        await saveState();
+      }
       refreshCurrentPage();
-
       showToast('সদস্য account deactivated হয়েছে।', 'success');
     };
 
@@ -3602,10 +3370,11 @@
           return;
         }
 
-        s.adminPasswordChanged = true;
-
-        window.APP_STATE.admin.passwordHash =
-          await sha256(newPassword);
+        if (!SUPABASE_CONFIGURED || !supabaseClient) {
+          return showToast('Supabase configuration ছাড়া Admin password পরিবর্তন করা যাবে না।','error');
+        }
+        const {error:pwError} = await supabaseClient.auth.updateUser({password:newPassword});
+        if (pwError) return showToast('Admin password পরিবর্তন হয়নি: '+pwError.message,'error');
       }
 
       saveState();
@@ -3840,12 +3609,26 @@
     });
 
     /* =========================================================
+       SUPABASE AUTH LISTENER
+       ========================================================= */
+
+    if (SUPABASE_CONFIGURED && supabaseClient) {
+      supabaseClient.auth.onAuthStateChange(async (event, session) => {
+        if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
+          await loadState();
+          renderAuthHeader();
+          updateNotificationBadges();
+        }
+      });
+    }
+
+    /* =========================================================
        INIT
        ========================================================= */
 
-    function initApp() {
+    async function initApp() {
 
-      loadState();
+      await loadState();
 
       applySettings();
 
