@@ -413,8 +413,8 @@
        ========================================================= */
 
     // Paste your Supabase Project URL and Publishable Key here.
-    const SUPABASE_URL = 'https://bebgrsqfouibfluxdhju.supabase.co';
-    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_CqpBa3OxIs6AwN7gtMxbXw_obdDnIPt';
+    const SUPABASE_URL = 'PASTE_YOUR_SUPABASE_URL_HERE';
+    const SUPABASE_PUBLISHABLE_KEY = 'PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE';
 
     const SUPABASE_CONFIGURED =
       SUPABASE_URL.startsWith('https://') &&
@@ -483,6 +483,13 @@
 
     function isValidBangladeshMobile(value) {
       return /^01[3-9]\d{8}$/.test(normalizeMobile(value));
+    }
+
+    // Supabase Phone Auth uses international E.164 format.
+    // Example: 01712345678 -> +8801712345678
+    function toSupabasePhone(value) {
+      const mobile = normalizeMobile(value);
+      return mobile.startsWith('0') ? '+88' + mobile : mobile;
     }
 
     function escapeHTML(value) {
@@ -1703,7 +1710,7 @@
             </h2>
 
             <p class="text-xs text-slate-500">
-              আপনার মোবাইল নম্বর/ইমেইল ও পাসওয়ার্ড দিন
+              আপনার মোবাইল নম্বর ও পাসওয়ার্ড দিন
             </p>
 
           </div>
@@ -1712,14 +1719,16 @@
 
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">
-                ইমেইল বা মোবাইল
+                মোবাইল নম্বর
               </label>
 
               <input type="text"
-                     id="login-id"
+                     id="login-mobile"
                      required
-                     autocomplete="username"
-                     placeholder="017xxxxxxxx বা email@example.com"
+                     inputmode="numeric"
+                     maxlength="14"
+                     autocomplete="tel"
+                     placeholder="017xxxxxxxx"
                      class="w-full text-xs p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" />
             </div>
 
@@ -1839,7 +1848,7 @@
             </h2>
 
             <p class="text-xs text-slate-500">
-              তথ্য প্রদান করলেই account তৈরি হবে এবং আপনি automatically login হবেন।
+              শুধু নাম, মোবাইল নম্বর ও পাসওয়ার্ড দিয়ে account তৈরি করুন। Email লাগবে না।
             </p>
           </div>
 
@@ -1875,18 +1884,6 @@
               <p class="text-[10px] text-slate-400 mt-1">
                 ১১ সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন।
               </p>
-            </div>
-
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">
-                ইমেইল (ঐচ্ছিক)
-              </label>
-
-              <input type="email"
-                     id="reg-email"
-                     maxlength="120"
-                     placeholder="example@mail.com"
-                     class="w-full text-xs p-2.5 border rounded-xl" />
             </div>
 
             <div>
@@ -2000,11 +1997,6 @@
               <p>
                 <strong>মোবাইল:</strong>
                 ${escapeHTML(user.mobile)}
-              </p>
-
-              <p>
-                <strong>ইমেইল:</strong>
-                ${escapeHTML(user.email || 'দেওয়া হয়নি')}
               </p>
 
               <p>
@@ -2146,41 +2138,81 @@
 
     window.handleRegisterSubmit = async function(e) {
       e.preventDefault();
+
       const name = document.getElementById('reg-name').value.trim();
       const mobile = normalizeMobile(document.getElementById('reg-mobile').value);
-      const email = document.getElementById('reg-email').value.trim().toLowerCase();
       const address = document.getElementById('reg-address').value.trim();
       const password = document.getElementById('reg-password').value;
 
       if (name.length < 2) return showToast('সঠিক পূর্ণ নাম দিন।','error');
       if (!isValidBangladeshMobile(mobile)) return showToast('সঠিক ১১ সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন।','error');
       if (password.length < 6) return showToast('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।','error');
-      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showToast('সঠিক ইমেইল দিন।','error');
 
       if (!SUPABASE_CONFIGURED) {
         showToast('আগে Supabase URL ও Publishable Key বসান।','error');
         return;
       }
 
-      const {data: existing} = await supabaseClient.from('profiles').select('id').eq('mobile',mobile).maybeSingle();
-      if (existing) return showToast('এই মোবাইল নম্বর দিয়ে ইতোমধ্যে account আছে।','error');
+      const {data: existing, error: existingError} = await supabaseClient
+        .from('profiles')
+        .select('id,status')
+        .eq('mobile', mobile)
+        .maybeSingle();
 
-      const authEmail = email || (mobile.replace(/^0/,'88') + '.member@seruakanda.local');
-      const {data, error} = await supabaseClient.auth.signUp({email:authEmail, password});
-      if (error) return showToast(error.message,'error');
-
-      if (!data.user) return showToast('Account তৈরি হয়নি। আবার চেষ্টা করুন।','error');
-      if (!data.session) {
-        showToast('Account তৈরি হয়েছে। Supabase email confirmation চালু থাকলে আগে email confirm করতে হবে।','info');
-        return;
+      if (existingError) {
+        return showToast('মোবাইল নম্বর যাচাই করা যায়নি: ' + existingError.message, 'error');
       }
 
-      const {error: profileError} = await supabaseClient.from('profiles').insert({
-        id:data.user.id, name, mobile, display_email:email || null, auth_email:authEmail, address, status:'Active', role:'Member'
+      if (existing) {
+        return showToast('এই মোবাইল নম্বর দিয়ে ইতোমধ্যে account আছে।','error');
+      }
+
+      const supabasePhone = toSupabasePhone(mobile);
+
+      // Member authentication uses Supabase Phone Auth. No email is collected or sent.
+      const {data, error} = await supabaseClient.auth.signUp({
+        phone: supabasePhone,
+        password
       });
+
+      if (error) {
+        if (error.code === 'phone_provider_disabled') {
+          return showToast('Supabase-এ Phone authentication চালু করা হয়নি। Authentication → Providers → Phone চালু করুন।', 'error');
+        }
+        if (error.code === 'phone_exists') {
+          return showToast('এই মোবাইল নম্বর দিয়ে ইতোমধ্যে Auth account আছে।', 'error');
+        }
+        if (error.code === 'phone_not_confirmed') {
+          return showToast('Phone confirmation চালু আছে। Phone confirmation বন্ধ করে আবার চেষ্টা করুন।', 'error');
+        }
+        return showToast('Account তৈরি হয়নি: ' + error.message, 'error');
+      }
+
+      if (!data.user) return showToast('Account তৈরি হয়নি। আবার চেষ্টা করুন।','error');
+
+      // For this project we want no OTP/no SMS during registration.
+      if (!data.session) {
+        return showToast('Account তৈরি হয়েছে, কিন্তু Phone confirmation চালু আছে। Phone confirmation বন্ধ করলে সরাসরি login হবে।', 'info');
+      }
+
+      // Keep the existing DB column for backward compatibility. This is NOT a real email
+      // and is never shown to members or used for authentication.
+      const internalAuthRef = 'phone_' + mobile + '@member.seruakanda.internal';
+
+      const {error: profileError} = await supabaseClient.from('profiles').insert({
+        id: data.user.id,
+        name,
+        mobile,
+        display_email: null,
+        auth_email: internalAuthRef,
+        address,
+        status: 'Active',
+        role: 'Member'
+      });
+
       if (profileError) {
         await supabaseClient.auth.signOut();
-        return showToast('Profile তৈরি হয়নি: '+profileError.message,'error');
+        return showToast('Profile তৈরি হয়নি: ' + profileError.message, 'error');
       }
 
       await loadState();
@@ -2191,21 +2223,40 @@
 
     window.handleLoginSubmit = async function(e) {
       e.preventDefault();
-      const id = document.getElementById('login-id').value.trim();
-      const password = document.getElementById('login-password').value;
-      if (!SUPABASE_CONFIGURED) return showToast('আগে Supabase URL ও Publishable Key বসান।','error');
 
-      let authEmail = id.toLowerCase();
-      const mobile = normalizeMobile(id);
-      if (isValidBangladeshMobile(mobile)) {
-        const {data:userProfile, error} = await supabaseClient.from('profiles').select('auth_email,status').eq('mobile',mobile).maybeSingle();
-        if (error || !userProfile) return showToast('এই মোবাইল নম্বর দিয়ে কোনো account পাওয়া যায়নি।','error');
-        if (userProfile.status !== 'Active') return showToast('এই account বর্তমানে active নয়।','error');
-        authEmail = userProfile.auth_email;
+      const mobile = normalizeMobile(document.getElementById('login-mobile').value);
+      const password = document.getElementById('login-password').value;
+
+      if (!SUPABASE_CONFIGURED) return showToast('আগে Supabase URL ও Publishable Key বসান।','error');
+      if (!isValidBangladeshMobile(mobile)) return showToast('সঠিক ১১ সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন।','error');
+      if (!password) return showToast('পাসওয়ার্ড দিন।','error');
+
+      const {data: userProfile, error: profileError} = await supabaseClient
+        .from('profiles')
+        .select('id,status')
+        .eq('mobile', mobile)
+        .maybeSingle();
+
+      if (profileError || !userProfile) {
+        return showToast('এই মোবাইল নম্বর দিয়ে কোনো account পাওয়া যায়নি।','error');
       }
 
-      const {data, error} = await supabaseClient.auth.signInWithPassword({email:authEmail,password});
-      if (error) return showToast('লগইন হয়নি: '+error.message,'error');
+      if (userProfile.status !== 'Active') {
+        return showToast('এই account বর্তমানে active নয়।','error');
+      }
+
+      const {error} = await supabaseClient.auth.signInWithPassword({
+        phone: toSupabasePhone(mobile),
+        password
+      });
+
+      if (error) {
+        if (error.code === 'phone_provider_disabled') {
+          return showToast('Supabase-এ Phone authentication চালু করা হয়নি।', 'error');
+        }
+        return showToast('লগইন হয়নি: ' + error.message,'error');
+      }
+
       await loadState();
       renderAuthHeader();
       showToast('সফলভাবে লগইন হয়েছে।','success');
@@ -2526,7 +2577,6 @@
 
                     <p class="text-xs text-slate-500">
                       ${escapeHTML(m.mobile)}
-                      ${m.email ? ' · ' + escapeHTML(m.email) : ''}
                       · ${escapeHTML(m.status)}
                     </p>
                   </div>
