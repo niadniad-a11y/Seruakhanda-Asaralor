@@ -2136,38 +2136,82 @@
        AUTH ACTIONS
        ========================================================= */
 
-    window.handleRegisterSubmit = async function(e) {
-      e.preventDefault();
+   ```js
+window.handleLoginSubmit = async function(e) {
+  e.preventDefault();
 
-      const name = document.getElementById('reg-name').value.trim();
-      const mobile = normalizeMobile(document.getElementById('reg-mobile').value);
-      const address = document.getElementById('reg-address').value.trim();
-      const password = document.getElementById('reg-password').value;
+  const mobile = normalizeMobile(
+    document.getElementById('login-mobile').value
+  );
 
-      if (name.length < 2) return showToast('সঠিক পূর্ণ নাম দিন।','error');
-      if (!isValidBangladeshMobile(mobile)) return showToast('সঠিক ১১ সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন।','error');
-      if (password.length < 6) return showToast('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।','error');
+  const password =
+    document.getElementById('login-password').value;
 
-      if (!SUPABASE_CONFIGURED) {
-        showToast('আগে Supabase URL ও Publishable Key বসান।','error');
-        return;
-      }
+  if (!SUPABASE_CONFIGURED || !supabaseClient) {
+    return showToast(
+      'আগে Supabase URL ও Publishable Key বসান।',
+      'error'
+    );
+  }
 
-      const {data: existing, error: existingError} = await supabaseClient
-        .from('profiles')
-        .select('id,status')
-        .eq('mobile', mobile)
-        .maybeSingle();
+  if (!isValidBangladeshMobile(mobile)) {
+    return showToast(
+      'সঠিক ১১ সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন।',
+      'error'
+    );
+  }
 
-      if (existingError) {
-        return showToast('মোবাইল নম্বর যাচাই করা যায়নি: ' + existingError.message, 'error');
-      }
+  if (!password) {
+    return showToast(
+      'পাসওয়ার্ড দিন।',
+      'error'
+    );
+  }
 
-      if (existing) {
-        return showToast('এই মোবাইল নম্বর দিয়ে ইতোমধ্যে account আছে।','error');
-      }
+  /*
+   * Same internal email used during registration.
+   */
+  const authEmail =
+    `member_${mobile}@seruakhanda.com`;
 
-      const supabasePhone = toSupabasePhone(mobile);
+  const {
+    data,
+    error
+  } = await supabaseClient.auth.signInWithPassword({
+    email: authEmail,
+    password: password
+  });
+
+  if (error) {
+    console.error('Login error:', error);
+
+    return showToast(
+      'মোবাইল নম্বর অথবা পাসওয়ার্ড সঠিক নয়।',
+      'error'
+    );
+  }
+
+  if (!data || !data.user) {
+    return showToast(
+      'Login session তৈরি হয়নি। আবার চেষ্টা করুন।',
+      'error'
+    );
+  }
+
+  await loadState();
+
+  renderAuthHeader();
+  updateNotificationBadges();
+
+  showToast(
+    'সফলভাবে লগইন হয়েছে।',
+    'success'
+  );
+
+  navigateTo('dashboard');
+};
+```
+
 
       // Member authentication uses Supabase Phone Auth. No email is collected or sent.
       const authEmail = `member_${mobile}@seruakhanda.com`;
