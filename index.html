@@ -2168,9 +2168,7 @@ window.handleLoginSubmit = async function(e) {
     );
   }
 
-  /*
-   * Same internal email used during registration.
-   */
+  // Registration-এর সময় যে একই internal email ব্যবহার হয়েছে
   const authEmail =
     `member_${mobile}@seruakhanda.com`;
 
@@ -2198,7 +2196,90 @@ window.handleLoginSubmit = async function(e) {
     );
   }
 
-  await loadState();
+  /*
+   * Login হওয়া user-এর profile সরাসরি বের করি
+   */
+  const {
+    data: profile,
+    error: profileError
+  } = await supabaseClient
+    .from('profiles')
+    .select(`
+      id,
+      name,
+      mobile,
+      address,
+      status,
+      role
+    `)
+    .eq('id', data.user.id)
+    .maybeSingle();
+
+  if (profileError) {
+    console.error('Profile error:', profileError);
+
+    await supabaseClient.auth.signOut();
+
+    return showToast(
+      'Member profile পাওয়া যায়নি।',
+      'error'
+    );
+  }
+
+  if (!profile) {
+    await supabaseClient.auth.signOut();
+
+    return showToast(
+      'এই account-এর member profile পাওয়া যায়নি।',
+      'error'
+    );
+  }
+
+  /*
+   * শুধু Active member Dashboard-এ ঢুকতে পারবে
+   */
+  if (profile.status !== 'Active') {
+    await supabaseClient.auth.signOut();
+
+    return showToast(
+      'এই account বর্তমানে Active নয়।',
+      'error'
+    );
+  }
+
+  /*
+   * Application state-এ member session সেট করি
+   */
+  APP_STATE.session = {
+    userId: profile.id,
+    role: profile.role || 'Member',
+    loginAt: new Date().toISOString()
+  };
+
+  /*
+   * Member information state-এ রাখি
+   */
+  const existingIndex = APP_STATE.users.findIndex(
+    user => user.id === profile.id
+  );
+
+  const memberData = {
+    id: profile.id,
+    name: profile.name,
+    mobile: profile.mobile,
+    address: profile.address || '',
+    status: profile.status,
+    role: profile.role || 'Member'
+  };
+
+  if (existingIndex >= 0) {
+    APP_STATE.users[existingIndex] = {
+      ...APP_STATE.users[existingIndex],
+      ...memberData
+    };
+  } else {
+    APP_STATE.users.push(memberData);
+  }
 
   renderAuthHeader();
   updateNotificationBadges();
@@ -2208,10 +2289,11 @@ window.handleLoginSubmit = async function(e) {
     'success'
   );
 
+  /*
+   * এবার Dashboard render হবে
+   */
   navigateTo('dashboard');
 };
-```
-
 
       // Member authentication uses Supabase Phone Auth. No email is collected or sent.
       const authEmail = `member_${mobile}@seruakhanda.com`;
