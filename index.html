@@ -2170,10 +2170,12 @@
       const supabasePhone = toSupabasePhone(mobile);
 
       // Member authentication uses Supabase Phone Auth. No email is collected or sent.
-      const {data, error} = await supabaseClient.auth.signUp({
-        phone: supabasePhone,
-        password
-      });
+      const authEmail = `member_${mobile}@members.seruakanda.local`;
+
+const {data, error} = await supabaseClient.auth.signUp({
+  email: authEmail,
+  password
+});
 
       if (error) {
         if (error.code === 'phone_provider_disabled') {
@@ -2245,10 +2247,12 @@
         return showToast('এই account বর্তমানে active নয়।','error');
       }
 
-      const {error} = await supabaseClient.auth.signInWithPassword({
-        phone: toSupabasePhone(mobile),
-        password
-      });
+      const authEmail = `member_${mobile}@members.seruakanda.local`;
+
+const {error} = await supabaseClient.auth.signInWithPassword({
+  email: authEmail,
+  password
+});
 
       if (error) {
         if (error.code === 'phone_provider_disabled') {
