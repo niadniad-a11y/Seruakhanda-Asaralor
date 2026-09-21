@@ -2170,9 +2170,9 @@
       const supabasePhone = toSupabasePhone(mobile);
 
       // Member authentication uses Supabase Phone Auth. No email is collected or sent.
-      const authEmail = `member_${mobile}@members.seruakanda.local`;
+      const authEmail = `member_${mobile}@seruakhanda.com`;
 
-const {data, error} = await supabaseClient.auth.signUp({
+const { error } = await supabaseClient.auth.signInWithPassword({
   email: authEmail,
   password
 });
